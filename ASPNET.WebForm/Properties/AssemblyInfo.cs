@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Basic.HTML_CSS_JS")]
+[assembly: AssemblyTitle("ASPNET.WebForm")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Basic.HTML_CSS_JS")]
+[assembly: AssemblyProduct("ASPNET.WebForm")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7c88509b-d885-41ec-ad19-4d6671e8c66a")]
+[assembly: Guid("ba439985-61ce-4fb5-abe5-e43c349951a9")]
 
 // Version information for an assembly consists of the following four values:
 //

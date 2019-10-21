@@ -1,0 +1,26 @@
+﻿İngilizcelerini daha sonra hallederiz ;)
+
+* <% Server tagleri directive anlamına gelir. Serverda çalıştırılacak C# kodları bu tagler arasına yazılır. <%@ directive yazmamızı sağlar o sağyfaya özel temel özellikleri veririz. <%: string kütüphanelerini(Response.Write("") ile aynı işi yapar), <% veri tabanı ile ilgili kütüphanelerini yükler. 
+
+* runat="server" attribute ile işaretlenen control artık server tarafından ulaşılabilir olur. Örneğin <div runat="server" /> HtmlGenericControl olarak döndürür.
+
+* MasterPage içinde değişmesini istediğin yere ContentPlaceHolder atıp MasterPageden türettiğin sayfaya Content atarak PlaceHolderId MasterPagedeki ContentPlaceHolderId yi vererek kullanabilirsin.
+* MasterPageden türetilen ayrı  bir MasterPage NestedMasterPage olarak çalışabilirsin. Bulunmasını istemediğin bölümleri çıkarabilirsin.
+
+* Repeater içinde button atmak işe yaramaz. Attığın bir LinkButton benzeri bir control ItemDataBound event içinde, eklediğin control için Repeater.ItemCommand eventi tetiklenir. Arayüzde CommandName attribute verdiğin string işlem ismine göre buton vb. yapacağı işi kontrol ederek Repeater.Control.Find() ile yakalayıp ItemCommand event içinde dönen tipe cast ederek ulaşırsan işe yarar. ItemCommand event içinde gelen EventArg propertylerine göre yapacağın işi belirleyebilirsin. 
+
+* e.Item.DataItem Repeater.ItemDataBound dışında her zaman null gelir. Sadece ItemDataBound event içinde DataItem yakalayıp istediğin class cast edebilirsin.s
+
+* Her control HTML karşılığı vardır. HyperLink, LinkButton => <a>,Button => <input type="submit"> , Label => <span>, Panel => <div> gibi. Button gibi bir control atıp event doldurduğunda
+<script src="/WebResource.axd?d=pynGkm2&amp;t=636995447080000000" type="text/javascript"></script> gibi sayfada unique bir script oluşturularak bu script üzerinden eventler çalıştırılır. 
+bunu LinkButton eventi içinde kod çalıştırırken, HyperLink NavigateURL attribute ise sadece bir url'e gönderir. LinkButton benzeri control event ise sayfadaki __doPostBack(eventTarget, eventArgument) fonksiyonunu çalıştırarak işini yapar.
+
+* ~ işareti çalıştırıldığı sayfadan root a çıkmayı sağlar. Aksi taktirde örneğin /Products/ klasör içinde <a href="Default.aspx" > yazılırsa http://www.localhost/Products/Default.aspx e gider fakat ~ konursa direk http://www.localhost/Default.aspx açar. Sadece runat="server" ile işaretlenmiş control de işe yarar.
+
+* UserControl sayfaya register edebilmek için design görünümünde olmak gerekir.
+
+* Repeater ile Datalist farkı, repeater direk verileri basarken DataList tablo olarak basar. Yine Datalist avantajı veriyi düzenleme moduna geçebilmesi. EditItemTemplate barındırır.
+
+* Birden fazla değer taşıyacaksak HiddenField içinde tutmak mantıklı.
+
+* ViewState nesnesi ile QueryString arasındaki fark: QueryString ile farklı sayfalar arasında veri taşıyabiliriz. ViewState ise farklı bir sayfaya geçildiğinde silinir, sadece o sayfa için geçerlidir.

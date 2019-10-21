@@ -7,16 +7,16 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7C88509B-D885-41EC-AD19-4D6671E8C66A}</ProjectGuid>
+    <ProjectGuid>{BA439985-61CE-4FB5-ABE5-E43C349951A9}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Basic.HTML_CSS_JS</RootNamespace>
-    <AssemblyName>Basic.HTML_CSS_JS</AssemblyName>
+    <RootNamespace>ASPNET.WebForm</RootNamespace>
+    <AssemblyName>ASPNET.WebForm</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44334</IISExpressSSLPort>
+    <IISExpressSSLPort>44302</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -43,6 +43,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\..\Downloads\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\..\Downloads\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -67,14 +73,54 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Html.html" />
+    <Content Include="DataControls\DataList.aspx" />
+    <Content Include="DataControls\Repeater.aspx" />
+    <Content Include="default.aspx" />
+    <Content Include="Notes.txt" />
+    <Content Include="UserControl\Menu.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataControls\DataList.aspx.cs">
+      <DependentUpon>DataList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataControls\DataList.aspx.designer.cs">
+      <DependentUpon>DataList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DataControls\Repeater.aspx.cs">
+      <DependentUpon>Repeater.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataControls\Repeater.aspx.designer.cs">
+      <DependentUpon>Repeater.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteBase.Master.cs">
+      <DependentUpon>SiteBase.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SiteBase.Master.designer.cs">
+      <DependentUpon>SiteBase.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\Menu.ascx.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\Menu.ascx.designer.cs">
+      <DependentUpon>Menu.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="SiteBase.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -82,6 +128,21 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure.Data\Infrastructure.Data.csproj">
+      <Project>{536BDC08-04FB-4C16-A50B-DF80C03B694B}</Project>
+      <Name>Infrastructure.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JustLearn.CustomExtensions\JustLearn.CustomExtensions.csproj">
+      <Project>{ef10b184-0fde-4dc9-bdc8-08d8cdcf2d0f}</Project>
+      <Name>JustLearn.CustomExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pattern.Domain\Pattern.Domain.csproj">
+      <Project>{F74F2309-7BAF-4E89-A6FD-7873CE051B2C}</Project>
+      <Name>Pattern.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -95,9 +156,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49969</DevelopmentServerPort>
+          <DevelopmentServerPort>52530</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44334/</IISUrl>
+          <IISUrl>https://localhost:44302/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
