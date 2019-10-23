@@ -74,8 +74,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataControls\DataList.aspx" />
+    <Content Include="DataControls\GridView.aspx" />
     <Content Include="DataControls\Repeater.aspx" />
     <Content Include="default.aspx" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\delete.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\save.png" />
     <Content Include="Notes.txt" />
     <Content Include="UserControl\Menu.ascx" />
     <Content Include="Web.config" />
@@ -87,6 +92,13 @@
     </Compile>
     <Compile Include="DataControls\DataList.aspx.designer.cs">
       <DependentUpon>DataList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DataControls\GridView.aspx.cs">
+      <DependentUpon>GridView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataControls\GridView.aspx.designer.cs">
+      <DependentUpon>GridView.aspx</DependentUpon>
     </Compile>
     <Compile Include="DataControls\Repeater.aspx.cs">
       <DependentUpon>Repeater.aspx</DependentUpon>

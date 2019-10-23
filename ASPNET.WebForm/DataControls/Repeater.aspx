@@ -26,7 +26,7 @@
                         <td id="cellPrice" runat="server"><%#EvalPrice() %></td>
                         <td id="cellPriceStatus" runat="server"></td>
                         <td>
-                            <asp:LinkButton Text="Raise" ID="btnRaise" runat="server" OnClick="btnRaise_Click" CommandName="Raise" CommandArgument='<%# Eval("ProductId") %>' />
+                            <asp:LinkButton Text="Raise" ID="btnRaise" runat="server" CommandName="Raise" CommandArgument='<%# Eval("ProductId") %>' />
                         </td>   
                     </tr>
                 </ItemTemplate>
@@ -37,7 +37,7 @@
                         <td id="cellPrice" runat="server"><%#EvalPrice() %></td>
                         <td id="cellPriceStatus" runat="server"></td>
                         <td>
-                            <asp:LinkButton Text="Raise" ID="btnRaise" runat="server" OnClick="btnRaise_Click" CommandName="Raise" CommandArgument='<%# Eval("ProductId") %>' />
+                            <asp:LinkButton Text="Raise" ID="btnRaise" runat="server" CommandName="Raise" CommandArgument='<%# Eval("ProductId") %>' />
                         </td>   
                     </tr>
                 </AlternatingItemTemplate>
