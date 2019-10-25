@@ -80,7 +80,7 @@ namespace ASPNET.WebForm.DataControls {
                     switch (e.CommandName) {
 
                         case "Raise":
-                            product.UnitPrice = product.UnitPrice * 1.1m;
+                            product.UnitPrice *= 1.1m;
                             break;
                     }
                     SiteBase.DbContext.SaveChanges();

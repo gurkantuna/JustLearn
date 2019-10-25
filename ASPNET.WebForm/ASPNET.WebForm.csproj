@@ -50,6 +50,7 @@
       <HintPath>..\..\..\..\Downloads\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -80,6 +81,7 @@
     <Content Include="Images\cancel.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\edit.png" />
+    <Content Include="Images\raise.png" />
     <Content Include="Images\save.png" />
     <Content Include="Notes.txt" />
     <Content Include="UserControl\Menu.ascx" />

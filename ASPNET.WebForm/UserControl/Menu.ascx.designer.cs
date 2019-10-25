@@ -7,12 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASPNET.WebForm.UserControl
-{
+namespace ASPNET.WebForm.UserControl {
 
 
-    public partial class Menu
-    {
+    public partial class Menu {
 
         /// <summary>
         /// linkRepeaters control.
@@ -31,5 +29,14 @@ namespace ASPNET.WebForm.UserControl
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor linkDataList;
+
+        /// <summary>
+        /// linkGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor linkGridView;
     }
 }

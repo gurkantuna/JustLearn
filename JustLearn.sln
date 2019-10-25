@@ -44,6 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{3870B7A6-F
 		..\..\..\Downloads\AutoMapper.dll = ..\..\..\Downloads\AutoMapper.dll
 		SOA.WebService\bin\EntityFramework.dll = SOA.WebService\bin\EntityFramework.dll
 		SOA.WebService\bin\EntityFramework.SqlServer.dll = SOA.WebService\bin\EntityFramework.SqlServer.dll
+		..\..\..\Downloads\FastMember.dll = ..\..\..\Downloads\FastMember.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.1 Repository Pattern", "6.1 Repository Pattern", "{797B1681-021A-4232-8E95-BDF2123B91C6}"
