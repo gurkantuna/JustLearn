@@ -6,7 +6,10 @@
 
 <html>
 <head runat="server">
-    <title></title>
+    <meta charset="utf-8" />
+    <title>JustLearn -
+        <asp:ContentPlaceHolder ID="ContenPlaceTitle" runat="server"></asp:ContentPlaceHolder>
+    </title>
     <link href="Content/bootstrap.min.css?v=0.1" rel="stylesheet" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>

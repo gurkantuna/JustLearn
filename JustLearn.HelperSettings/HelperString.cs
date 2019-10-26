@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JustLearn.HelperSettings
-{  
+namespace JustLearn.HelperSettings {
     public static class HelperString {
 
         public const string Id = "Id";
@@ -14,6 +13,10 @@ namespace JustLearn.HelperSettings
         public const string UnitPrice = "UnitPrice";
 
         public const string GeneralErrorMessage = "An error occured!";
+
+        public static class Sessions {
+            public const string Name = "Name";
+        }
 
         public static class ViewStates {
             public const string SortExpression = "SortExpression";
@@ -27,7 +30,6 @@ namespace JustLearn.HelperSettings
 
         public static class Cookies {
             public const string Name = "Name";
-            public const string NameValue = "John Doe";
         }
     }
 }

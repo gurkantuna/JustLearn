@@ -13,15 +13,14 @@ namespace ASPNET.WebForm.Learn.StateManagement {
         }
 
         protected void btnSetViewState_Click(object sender, EventArgs e) {
-            ViewState[ProductId] = 1;
+            ViewState[ProductId] = textProductId.Text;
             labelProductId.Text = string.Empty;
         }
 
         protected void btnGetViewState_Click(object sender, EventArgs e) {
-            var viewState = ViewState[ProductId];
+            var viewState = ViewState[ProductId].ToString();
             if (viewState != null) {
-                int produxtID = (int)viewState;
-                labelProductId.Text = produxtID.ToString();
+                labelProductId.Text = viewState;
             }
         }
     }

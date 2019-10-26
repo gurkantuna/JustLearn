@@ -7,6 +7,7 @@
         }
     </style>
 </asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="ContenPlaceTitle" runat="server">QueryString2</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <table class="table">
         <tr>

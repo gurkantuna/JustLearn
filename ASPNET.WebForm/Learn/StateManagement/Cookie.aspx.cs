@@ -13,7 +13,7 @@ namespace ASPNET.WebForm.Learn.StateManagement {
         }
 
         protected void btnSetCookie_Click(object sender, EventArgs e) {
-            HttpCookie cookie = new HttpCookie(Cookies.Name, Cookies.NameValue);
+            HttpCookie cookie = new HttpCookie(Cookies.Name, Server.UrlEncode(textName.Text));
             cookie.Expires = DateTime.Now.AddDays(1);
             Response.Cookies.Add(cookie);
             labelCookie.Text = string.Empty;
@@ -22,7 +22,7 @@ namespace ASPNET.WebForm.Learn.StateManagement {
         protected void btnGetCookie_Click(object sender, EventArgs e) {
             var nameCookie = Request.Cookies.Get(Cookies.Name);
             if (nameCookie != null) {
-                labelCookie.Text = nameCookie.Value;
+                labelCookie.Text = Server.UrlDecode(nameCookie.Value);
             }
         }
     }

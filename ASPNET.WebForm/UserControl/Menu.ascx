@@ -12,6 +12,7 @@
             <li><a id="A3" href="~/Learn/StateManagement/ViewState.aspx" runat="server">ViewState</a></li>
             <li><a id="A4" href="~/Learn/StateManagement/QueryString1.aspx" runat="server">QueryString</a></li>
             <li><a id="A5" href="~/Learn/StateManagement/Cookie.aspx" runat="server">Cookie</a></li>
+            <li><a id="A6" href="~/Learn/StateManagement/Session.aspx" runat="server">Session</a></li>
         </ul>
     </div>
 </nav>

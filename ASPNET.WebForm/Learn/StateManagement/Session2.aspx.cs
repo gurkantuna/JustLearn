@@ -7,13 +7,11 @@ using System.Web.UI.WebControls;
 using static JustLearn.HelperSettings.HelperString;
 
 namespace ASPNET.WebForm.Learn.StateManagement {
-    public partial class Session : System.Web.UI.Page {
+    public partial class Session2 : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
-
-        }
-
-        protected void btnSetSession_Click(object sender, EventArgs e) {
-            Session.Add(Sessions.Name, textName.Text);
+            if (Session[Sessions.Name] != null) {
+                labelSessionValue.Text = Session[Sessions.Name].ToString();
+            }
         }
     }
 }

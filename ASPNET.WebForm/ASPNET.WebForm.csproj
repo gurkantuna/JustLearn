@@ -101,6 +101,7 @@
     <Content Include="Learn\StateManagement\QueryString1.aspx" />
     <Content Include="Learn\StateManagement\QueryString2.aspx" />
     <Content Include="Learn\StateManagement\Session.aspx" />
+    <Content Include="Learn\StateManagement\Session2.aspx" />
     <Content Include="Learn\StateManagement\ViewState.aspx" />
     <Content Include="Notes.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -240,6 +241,13 @@
     </Compile>
     <Compile Include="Learn\StateManagement\Session.aspx.designer.cs">
       <DependentUpon>Session.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\StateManagement\Session2.aspx.cs">
+      <DependentUpon>Session2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\StateManagement\Session2.aspx.designer.cs">
+      <DependentUpon>Session2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Learn\StateManagement\ViewState.aspx.cs">
       <DependentUpon>ViewState.aspx</DependentUpon>
