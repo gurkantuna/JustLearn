@@ -7,45 +7,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASPNET.WebForm {
+namespace ASPNET.WebForm.Learn.StateManagement {
 
 
-    public partial class SiteBase {
+    public partial class Cookie {
 
         /// <summary>
-        /// head control.
+        /// labelCookie control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.Label labelCookie;
 
         /// <summary>
-        /// Menu1 control.
+        /// btnSetCookie control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ASPNET.WebForm.UserControl.Menu Menu1;
+        protected global::System.Web.UI.WebControls.Button btnSetCookie;
 
         /// <summary>
-        /// form1 control.
+        /// btnGetCookie control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// Content control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder Content;
+        protected global::System.Web.UI.WebControls.Button btnGetCookie;
     }
 }

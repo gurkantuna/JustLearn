@@ -7,45 +7,36 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASPNET.WebForm {
+namespace ASPNET.WebForm.Learn.StateManagement {
 
 
-    public partial class SiteBase {
+    public partial class QueryString2 {
 
         /// <summary>
-        /// head control.
+        /// labelProductId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.Label labelProductId;
 
         /// <summary>
-        /// Menu1 control.
+        /// labelProductName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ASPNET.WebForm.UserControl.Menu Menu1;
+        protected global::System.Web.UI.WebControls.Label labelProductName;
 
         /// <summary>
-        /// form1 control.
+        /// labelUnitPrice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// Content control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder Content;
+        protected global::System.Web.UI.WebControls.Label labelUnitPrice;
     }
 }

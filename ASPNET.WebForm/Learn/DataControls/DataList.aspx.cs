@@ -83,7 +83,7 @@ namespace ASPNET.WebForm.DataControls {
                     LoadDataList();
                 }
                 catch (Exception ex) {
-                    this.ShowJSMessageMox("An error occured while update", ex);
+                    this.ShowJSMessageBox("An error occured while update", ex);
                 }
             }
         }
@@ -99,10 +99,10 @@ namespace ASPNET.WebForm.DataControls {
                     SiteBase.DbContext.SaveChanges();
                     LoadDataList();
                     DataList1.EditItemIndex = -1;//Finished delete operation and leave EditItemTemplate
-                    this.ShowJSMessageMox($"{product.ProductName} deleted succesfully");
+                    this.ShowJSMessageBox($"{product.ProductName} deleted succesfully");
                 }
                 catch (Exception ex) {
-                    this.ShowJSMessageMox("An error occured while delete", ex);
+                    this.ShowJSMessageBox("An error occured while delete", ex);
                 }
             }
         }

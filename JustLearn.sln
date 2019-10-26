@@ -98,6 +98,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic.HTML_CSS_JS", "Basic.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASPNET.WebForm", "ASPNET.WebForm\ASPNET.WebForm.csproj", "{BA439985-61CE-4FB5-ABE5-E43C349951A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustLearn.HelperSettings", "JustLearn.HelperSettings\JustLearn.HelperSettings.csproj", "{E2B7208B-16A2-4260-899E-211F4511F032}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -192,6 +194,10 @@ Global
 		{BA439985-61CE-4FB5-ABE5-E43C349951A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA439985-61CE-4FB5-ABE5-E43C349951A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA439985-61CE-4FB5-ABE5-E43C349951A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B7208B-16A2-4260-899E-211F4511F032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B7208B-16A2-4260-899E-211F4511F032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B7208B-16A2-4260-899E-211F4511F032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B7208B-16A2-4260-899E-211F4511F032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -228,6 +234,7 @@ Global
 		{3A49895A-563C-4704-A789-05770C402DDB} = {461B5521-42DD-4CF9-8D86-756CF138F74E}
 		{7C88509B-D885-41EC-AD19-4D6671E8C66A} = {836A7D54-72F1-4C2E-AF1D-919117243A5C}
 		{BA439985-61CE-4FB5-ABE5-E43C349951A9} = {A5D6A24D-DC37-4D50-B09D-72CEB3C2AA15}
+		{E2B7208B-16A2-4260-899E-211F4511F032} = {2C28057B-E690-46E8-B41D-FF92169582B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E93C6F1E-AB29-462A-B7FA-75560CBDFED8}

@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 
 namespace JustLearn.CustomExtensions {
     public static class CustomExtensions {
-        public static void ShowJSMessageMox(this TemplateControl page, string message, Exception ex = null) {
+        public static void ShowJSMessageBox(this TemplateControl page, string message, Exception ex = null) {
             if (page is Page p) {
                 if (!p.ClientScript.IsClientScriptBlockRegistered("PopupScript")) {
 

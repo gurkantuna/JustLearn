@@ -4,7 +4,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
 
-    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="ProductId" OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating" OnRowCancelingEdit="GridView1_RowCancelingEdit" OnRowDeleting="GridView1_RowDeleting" AllowSorting="True" EmptyDataText="No Data" PageSize="20" OnRowCommand="GridView1_RowCommand" OnSorting="GridView1_Sorting">
+    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="ProductId" OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating"  OnRowCancelingEdit="GridView1_RowCancelingEdit" OnRowDeleting="GridView1_RowDeleting" AllowSorting="True" EmptyDataText="No Data" PageSize="20" OnRowCommand="GridView1_RowCommand" OnSorting="GridView1_Sorting" CssClass="table table-striped">
         <Columns>
             <asp:BoundField HeaderText="Product Name" DataField="ProductName" SortExpression="ProductName" />
             <asp:BoundField HeaderText="Unit Price" DataField="UnitPrice" ApplyFormatInEditMode="true" DataFormatString="{0:n}" SortExpression="UnitPrice" />

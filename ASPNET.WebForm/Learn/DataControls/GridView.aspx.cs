@@ -1,18 +1,11 @@
 ﻿using JustLearn.CustomExtensions;
 using Pattern.Domain.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
-using System.Data.Linq;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using static JustLearn.HelperSettings.HelperString;
 
 namespace ASPNET.WebForm.DataControls {
     public partial class GridView : System.Web.UI.Page {
@@ -24,7 +17,7 @@ namespace ASPNET.WebForm.DataControls {
         }
 
         private void LoadData() {
-            object sortExp = ViewState["SortExp"];
+            object sortExp = ViewState[ViewStates.SortExpression];
 
             if (sortExp != null) {
                 switch (SortState) {
@@ -68,15 +61,15 @@ namespace ASPNET.WebForm.DataControls {
             switch (operationType) {
                 case OperationType.Update:
                     var evn = e as GridViewUpdateEventArgs;
-                    productId = (int)evn.Keys["ProductId"];
+                    productId = (int)evn.Keys[ProductId];
                     product = DbProducts.FirstOrDefault(x => x.ProductID == productId);
                     if (product != null) {
-                        product.ProductName = evn.NewValues["ProductName"].ToString();
-                        product.UnitPrice = Convert.ToDecimal(evn.NewValues["UnitPrice"]);
+                        product.ProductName = evn.NewValues[ProductName].ToString();
+                        product.UnitPrice = Convert.ToDecimal(evn.NewValues[UnitPrice]);
                     }
                     break;
                 case OperationType.Delete:
-                    productId = (int)(e as GridViewDeleteEventArgs).Keys["ProductId"];
+                    productId = (int)(e as GridViewDeleteEventArgs).Keys[ProductId];
                     product = DbProducts.FirstOrDefault(x => x.ProductID == productId);
                     if (product != null) {
                         DbProducts.Remove(product);
@@ -94,7 +87,7 @@ namespace ASPNET.WebForm.DataControls {
                 SiteBase.DbContext.SaveChanges();
             }
             catch (Exception ex) {
-                CustomExtensions.ShowJSMessageMox(this, "An error occured while delete", ex);
+                CustomExtensions.ShowJSMessageBox(this, GeneralErrorMessage, ex);
             }
             FinishIndex();
         }
@@ -105,14 +98,14 @@ namespace ASPNET.WebForm.DataControls {
 
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e) {
 
-            if (e.CommandName != "Sort") {
+            if (e.CommandName != CommandNames.Sort) {
 
                 int productId = Convert.ToInt32(e.CommandArgument);
                 var product = DbProducts.FirstOrDefault(p => p.ProductID == productId);
 
                 if (product != null) {
                     switch (e.CommandName) {
-                        case "Raise":
+                        case CommandNames.Raise:
                             product.UnitPrice *= 1.1m;
                             break;
                     }
@@ -138,17 +131,17 @@ namespace ASPNET.WebForm.DataControls {
 
         private SortType SortState {
             get {
-                ViewState["Sort"] = ViewState["Sort"] ?? SortType.Ascending;
-                return (SortType)ViewState["Sort"];
+                ViewState[ViewStates.SortState] = ViewState[ViewStates.SortState] ?? SortType.Ascending;
+                return (SortType)ViewState[ViewStates.SortState];
             }
             set {
-                ViewState["Sort"] = value;
+                ViewState[ViewStates.SortState] = value;
             }
         }
 
         protected void GridView1_Sorting(object sender, GridViewSortEventArgs e) {
 
-            ViewState["SortExp"] = e.SortExpression;
+            ViewState[ViewStates.SortExpression] = e.SortExpression;
 
             switch (SortState) {
                 case SortType.Ascending:
