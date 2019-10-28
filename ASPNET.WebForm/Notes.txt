@@ -7,7 +7,7 @@
 * MasterPage içinde değişmesini istediğin yere ContentPlaceHolder atıp MasterPageden türettiğin sayfaya Content atarak PlaceHolderId MasterPagedeki ContentPlaceHolderId yi vererek kullanabilirsin.
 * MasterPageden türetilen ayrı  bir MasterPage NestedMasterPage olarak çalışabilirsin. Bulunmasını istemediğin bölümleri çıkarabilirsin.
 
-* Repeater içinde button atmak işe yaramaz. Attığın bir LinkButton benzeri bir control ItemDataBound event içinde, eklediğin control için Repeater.ItemCommand eventi tetiklenir. Arayüzde CommandName attribute verdiğin string işlem ismine göre buton vb. yapacağı işi kontrol ederek Repeater.Control.Find() ile yakalayıp ItemCommand event içinde dönen tipe cast ederek ulaşırsan işe yarar. ItemCommand event içinde gelen EventArg propertylerine göre yapacağın işi belirleyebilirsin. ItemDataBound(s,e) içinde e.Item.DataItem seçilen satırı döndürür. Kendi class ına cast ederek kullanabilirsin. Bu event satır rengi değişimleri gibi işlemler için de kullanılabilir. Repeater sadece göstermek ve dışardan değer gerektirmeyen işlemlerde kullanılabilir. Dışardan ProductName update gibi bir işlem yapılacaksa Datalist veya GridView kullanılmalıdır. ItemComman, ItemDataBound, e.Item.ItemType...
+* Repeater içinde button atmak işe yaramaz. Attığın bir LinkButton benzeri bir control ItemDataBound event içinde, eklediğin control için Repeater.ItemCommand eventi tetiklenir. Arayüzde CommandName attribute verdiğin string işlem ismine göre buton vb. yapacağı işi kontrol ederek Repeater.Control.Find() ile yakalayıp ItemCommand event içinde dönen tipe cast ederek ulaşırsan işe yarar. ItemCommand event içinde gelen EventArg propertylerine göre yapacağın işi belirleyebilirsin. ItemDataBound(s,e) içinde e.Item.DataItem seçilen satırı döndürür. Kendi class ına cast ederek kullanabilirsin. Bu event satır rengi değişimleri gibi işlemler için de kullanılabilir. Repeater sadece göstermek ve dışardan değer gerektirmeyen işlemlerde kullanılabilir. Dışardan ProductName update gibi bir işlem yapılacaksa Datalist veya GridView kullanılmalıdır. ItemCommand, ItemDataBound, e.Item.ItemType...
 
 * e.Item.DataItem Repeater.ItemDataBound dışında her zaman null gelir. Sadece ItemDataBound event içinde DataItem yakalayıp istediğin class cast edebilirsin.s
 
@@ -24,3 +24,18 @@ bunu LinkButton eventi içinde kod çalıştırırken, HyperLink NavigateURL att
 * Birden fazla değer taşıyacaksak HiddenField içinde tutmak mantıklı.
 
 * ViewState nesnesi ile QueryString arasındaki fark: QueryString ile farklı sayfalar arasında veri taşıyabiliriz. ViewState ise farklı bir sayfaya geçildiğinde silinir, sadece o sayfa için geçerlidir.
+
+* MemberShip için Tools > Command Line > Developer Command Prompt > aspnet_rgsql ile db tabloları insert ediyoruz. Web.config >system.web> içine C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\machine.config içinde <membership> tag seçip yapıştırıyoruz. Giriş-çıkış kontrolleri için LoginStatus kullanbilirsin.
+
+* Her klasörün kendi  web.config dosyası olabilir. Klasör içindeki web.cofigde <roleManager> tag ile içinde bulunduğu klasörün izinleri ayarlanabilir. örnegin Admin klasörü içinde <allow role="Admin"/> vermişsek <deny users="*"/> ile diğer kullancılıarın bu klasöre girişini kapatmak gerekir. örnegin Users klasörü için de <deny users="?"/> giriş yapan kullanıcılara izin verir diğer tümünü engeller. Sayfa basında girmesini istediğin kullanıcılar ya da roller için
+
+<location path="PrivatePage.aspx">
+    <system.web>
+      <authorization>
+        <allow roles="Sucker"/>
+        <deny users="*"/>
+      </authorization>
+    </system.web>
+  </location>
+
+ benzeri bir yapı kurabilirsin. Sayfa içinde farklı içerik göstermek için LoginView componentinin <AnonymousTemplate>, <LoggedInTemplate> ve <RoleGroups><asp:RoleGroup Roles="Admin"><ContentTemplate>Welcome Admin</asp:RoleGroup> templatelerini kullanabilirsin.

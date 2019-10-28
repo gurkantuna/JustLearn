@@ -96,6 +96,12 @@
     <Content Include="Images\edit.png" />
     <Content Include="Images\raise.png" />
     <Content Include="Images\save.png" />
+    <Content Include="Learn\MemberShip\Login.aspx" />
+    <Content Include="Learn\MemberShip\Manuel\Login.aspx" />
+    <Content Include="Learn\MemberShip\Manuel\Register.aspx" />
+    <Content Include="Learn\MemberShip\Manuel\RoleManager.aspx" />
+    <Content Include="Learn\MemberShip\MemberShip.aspx" />
+    <Content Include="Learn\MemberShip\Register.aspx" />
     <Content Include="Learn\StateManagement\Application.aspx" />
     <Content Include="Learn\StateManagement\Cookie.aspx" />
     <Content Include="Learn\StateManagement\QueryString1.aspx" />
@@ -206,6 +212,48 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Manuel\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Manuel\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Manuel\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Manuel\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Manuel\RoleManager.aspx.cs">
+      <DependentUpon>RoleManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Manuel\RoleManager.aspx.designer.cs">
+      <DependentUpon>RoleManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\MemberShip\MemberShip.aspx.cs">
+      <DependentUpon>MemberShip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\MemberShip\MemberShip.aspx.designer.cs">
+      <DependentUpon>MemberShip.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\MemberShip\Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
     <Compile Include="Learn\StateManagement\Application.aspx.cs">
       <DependentUpon>Application.aspx</DependentUpon>

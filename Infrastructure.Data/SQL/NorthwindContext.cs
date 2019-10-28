@@ -5,14 +5,21 @@ namespace Pattern.Domain.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class NorthwindContext : DbContext
-    {
+    public partial class NorthwindContext : DbContext {
         public NorthwindContext()
-            : base("name=NorthwindContext")
-        {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<NorthwindContext>());
+            : base("name=NorthwindContext") {
         }
 
+        public virtual DbSet<aspnet_Applications> aspnet_Applications { get; set; }
+        public virtual DbSet<aspnet_Membership> aspnet_Membership { get; set; }
+        public virtual DbSet<aspnet_Paths> aspnet_Paths { get; set; }
+        public virtual DbSet<aspnet_PersonalizationAllUsers> aspnet_PersonalizationAllUsers { get; set; }
+        public virtual DbSet<aspnet_PersonalizationPerUser> aspnet_PersonalizationPerUser { get; set; }
+        public virtual DbSet<aspnet_Profile> aspnet_Profile { get; set; }
+        public virtual DbSet<aspnet_Roles> aspnet_Roles { get; set; }
+        public virtual DbSet<aspnet_SchemaVersions> aspnet_SchemaVersions { get; set; }
+        public virtual DbSet<aspnet_Users> aspnet_Users { get; set; }
+        public virtual DbSet<aspnet_WebEvent_Events> aspnet_WebEvent_Events { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CustomerDemographic> CustomerDemographics { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -40,9 +47,67 @@ namespace Pattern.Domain.Models
         public virtual DbSet<Sales_Totals_by_Amount> Sales_Totals_by_Amounts { get; set; }
         public virtual DbSet<Summary_of_Sales_by_Quarter> Summary_of_Sales_by_Quarters { get; set; }
         public virtual DbSet<Summary_of_Sales_by_Year> Summary_of_Sales_by_Years { get; set; }
+        public virtual DbSet<vw_aspnet_Applications> vw_aspnet_Applications { get; set; }
+        public virtual DbSet<vw_aspnet_MembershipUsers> vw_aspnet_MembershipUsers { get; set; }
+        public virtual DbSet<vw_aspnet_Profiles> vw_aspnet_Profiles { get; set; }
+        public virtual DbSet<vw_aspnet_Roles> vw_aspnet_Roles { get; set; }
+        public virtual DbSet<vw_aspnet_Users> vw_aspnet_Users { get; set; }
+        public virtual DbSet<vw_aspnet_UsersInRoles> vw_aspnet_UsersInRoles { get; set; }
+        public virtual DbSet<vw_aspnet_WebPartState_Paths> vw_aspnet_WebPartState_Paths { get; set; }
+        public virtual DbSet<vw_aspnet_WebPartState_Shared> vw_aspnet_WebPartState_Shared { get; set; }
+        public virtual DbSet<vw_aspnet_WebPartState_User> vw_aspnet_WebPartState_User { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+            modelBuilder.Entity<aspnet_Applications>()
+                .HasMany(e => e.aspnet_Membership)
+                .WithRequired(e => e.aspnet_Applications)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<aspnet_Applications>()
+                .HasMany(e => e.aspnet_Paths)
+                .WithRequired(e => e.aspnet_Applications)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<aspnet_Applications>()
+                .HasMany(e => e.aspnet_Roles)
+                .WithRequired(e => e.aspnet_Applications)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<aspnet_Applications>()
+                .HasMany(e => e.aspnet_Users)
+                .WithRequired(e => e.aspnet_Applications)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<aspnet_Paths>()
+                .HasOptional(e => e.aspnet_PersonalizationAllUsers)
+                .WithRequired(e => e.aspnet_Paths);
+
+            modelBuilder.Entity<aspnet_Roles>()
+                .HasMany(e => e.aspnet_Users)
+                .WithMany(e => e.aspnet_Roles)
+                .Map(m => m.ToTable("aspnet_UsersInRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
+
+            modelBuilder.Entity<aspnet_Users>()
+                .HasOptional(e => e.aspnet_Membership)
+                .WithRequired(e => e.aspnet_Users);
+
+            modelBuilder.Entity<aspnet_Users>()
+                .HasOptional(e => e.aspnet_Profile)
+                .WithRequired(e => e.aspnet_Users);
+
+            modelBuilder.Entity<aspnet_WebEvent_Events>()
+                .Property(e => e.EventId)
+                .IsFixedLength()
+                .IsUnicode(false);
+
+            modelBuilder.Entity<aspnet_WebEvent_Events>()
+                .Property(e => e.EventSequence)
+                .HasPrecision(19, 0);
+
+            modelBuilder.Entity<aspnet_WebEvent_Events>()
+                .Property(e => e.EventOccurrence)
+                .HasPrecision(19, 0);
+
             modelBuilder.Entity<CustomerDemographic>()
                 .Property(e => e.CustomerTypeID)
                 .IsFixedLength();
