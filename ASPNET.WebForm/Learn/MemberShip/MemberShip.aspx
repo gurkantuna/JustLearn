@@ -13,9 +13,6 @@
         <div>
             Welcome to our web site!
         </div>
-        <asp:LoginView ID="LoginView1" runat="server">
-            <lo
-        </asp:LoginView>
     </form>
 </body>
 </html>

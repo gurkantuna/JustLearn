@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASPNET.WebForm.Learn.MemberShip {
+namespace Basic.jQuery {
 
 
-    public partial class MemberShip {
+    public partial class Default {
 
         /// <summary>
         /// form1 control.
@@ -22,21 +22,30 @@ namespace ASPNET.WebForm.Learn.MemberShip {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// LoginName1 control.
+        /// labelClock control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LoginName LoginName1;
+        protected global::System.Web.UI.WebControls.Literal labelClock;
 
         /// <summary>
-        /// LoginStatus1 control.
+        /// btnSyncClock control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LoginStatus LoginStatus1;
+        protected global::System.Web.UI.WebControls.Button btnSyncClock;
+
+        /// <summary>
+        /// tableProducts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView tableProducts;
     }
 }
