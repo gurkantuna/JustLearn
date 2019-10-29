@@ -13,6 +13,9 @@
             <li><a id="A4" href="~/Learn/StateManagement/QueryString1.aspx" runat="server">QueryString</a></li>
             <li><a id="A5" href="~/Learn/StateManagement/Cookie.aspx" runat="server">Cookie</a></li>
             <li><a id="A6" href="~/Learn/StateManagement/Session.aspx" runat="server">Session</a></li>
+            <li><a id="A7" href="~/Learn/StateManagement/Application.aspx" runat="server">Application</a></li>
+            <li><a id="A8" href="~/Learn/MemberShip/MemberShip.aspx" runat="server">MemberShip</a></li>
+            <li><a id="A9" href="~/Learn/Caching/OutputCaching.aspx" runat="server">OutputCaching</a></li>
         </ul>
     </div>
 </nav>

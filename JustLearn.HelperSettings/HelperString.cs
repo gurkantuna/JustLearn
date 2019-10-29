@@ -9,6 +9,7 @@ namespace JustLearn.HelperSettings {
 
         public const string Id = "Id";
         public const string ProductId = "ProductId";
+        public const string CategoryId = "CategoryId";
         public const string ProductName = "ProductName";
         public const string UnitPrice = "UnitPrice";
 
@@ -30,6 +31,10 @@ namespace JustLearn.HelperSettings {
 
         public static class Cookies {
             public const string Name = "Name";
+        }
+
+        public static class Caches {
+            public const string Products = "Products";
         }
     }
 }

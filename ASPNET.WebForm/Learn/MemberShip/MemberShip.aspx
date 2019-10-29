@@ -11,7 +11,7 @@
         <asp:LoginName ID="LoginName1" runat="server" />
         <asp:LoginStatus ID="LoginStatus1" runat="server" />
         <div>
-            Welcome to our web site!
+            Welcome to our web site! <a href="Register.aspx">Sign Up</a> | <a href="/">Home</a>
         </div>
     </form>
 </body>

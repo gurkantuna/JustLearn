@@ -25,7 +25,9 @@ bunu LinkButton eventi içinde kod çalıştırırken, HyperLink NavigateURL att
 
 * ViewState nesnesi ile QueryString arasındaki fark: QueryString ile farklı sayfalar arasında veri taşıyabiliriz. ViewState ise farklı bir sayfaya geçildiğinde silinir, sadece o sayfa için geçerlidir.
 
-* MemberShip için Tools > Command Line > Developer Command Prompt > aspnet_rgsql ile db tabloları insert ediyoruz. Web.config >system.web> içine C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\machine.config içinde <membership> tag seçip yapıştırıyoruz. Giriş-çıkış kontrolleri için LoginStatus kullanbilirsin.
+* MemberShip için Tools > Command Line > Developer Command Prompt > aspnet_rgsql ile db tabloları insert ediyoruz. aspnet_regsql -? ile verilecek parametreleri görebiliriz. 
+Web.config >system.web> içine C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\machine.config içinde <membership> tag seçip yapıştırıyoruz. Giriş-çıkış kontrolleri için LoginStatus kullanbilirsin.
+DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwind için cache enable çekme komutu aspnet_regsql -S .\sqlexpress -d Northwind -U sa -P 123 -ed yazılırak önce cache enable çekilir. Daha sonra -t Products -et ile tablo için trigger eklenir. 
 
 * Her klasörün kendi  web.config dosyası olabilir. Klasör içindeki web.cofigde <roleManager> tag ile içinde bulunduğu klasörün izinleri ayarlanabilir. örnegin Admin klasörü içinde <allow role="Admin"/> vermişsek <deny users="*"/> ile diğer kullancılıarın bu klasöre girişini kapatmak gerekir. örnegin Users klasörü için de <deny users="?"/> giriş yapan kullanıcılara izin verir diğer tümünü engeller. Sayfa basında girmesini istediğin kullanıcılar ya da roller için
 

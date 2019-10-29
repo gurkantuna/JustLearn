@@ -9,6 +9,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <a href="/">Home</a>
             <asp:CreateUserWizard ID="CreateUserWizard1" runat="server" FinishDestinationPageUrl="~/Learn/MemberShip/MemberShip.aspx">
                 <WizardSteps>
                     <asp:CreateUserWizardStep ID="CreateUserWizardStep1" runat="server">

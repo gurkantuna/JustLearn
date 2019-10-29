@@ -7,27 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ASPNET.WebForm.Learn.StateManagement {
+namespace ASPNET.WebForm.Learn.Caching {
 
 
-    public partial class Application {
+    public partial class GetProducts {
 
         /// <summary>
-        /// labelOnlineVisitors control.
+        /// rpProducts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelOnlineVisitors;
-
-        /// <summary>
-        /// labelTotalVisitors control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelTotalVisitors;
+        protected global::System.Web.UI.WebControls.Repeater rpProducts;
     }
 }

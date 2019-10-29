@@ -8,6 +8,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <a href="Register.aspx">Register</a>
+        <a href="/">Home</a>
         <div>
             <asp:Login ID="Login1" runat="server"></asp:Login>
         </div>

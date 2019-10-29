@@ -87,6 +87,11 @@
     <Content Include="ErrorPages\500.aspx" />
     <Content Include="ErrorPages\error.css" />
     <Content Include="ErrorPages\GeneralError.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Learn\Caching\DataCaching.aspx" />
+    <Content Include="Learn\Caching\GetProducts.aspx" />
+    <Content Include="Learn\Caching\OutputCaching.aspx" />
+    <Content Include="Learn\Caching\OutputCaching2.aspx" />
     <Content Include="Learn\DataControls\DataList.aspx" />
     <Content Include="Learn\DataControls\GridView.aspx" />
     <Content Include="Learn\DataControls\Repeater.aspx" />
@@ -184,6 +189,37 @@
     </Compile>
     <Compile Include="ErrorPages\GeneralError.aspx.designer.cs">
       <DependentUpon>GeneralError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\Caching\DataCaching.aspx.cs">
+      <DependentUpon>DataCaching.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\Caching\DataCaching.aspx.designer.cs">
+      <DependentUpon>DataCaching.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\Caching\GetProducts.aspx.cs">
+      <DependentUpon>GetProducts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\Caching\GetProducts.aspx.designer.cs">
+      <DependentUpon>GetProducts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\Caching\OutputCaching.aspx.cs">
+      <DependentUpon>OutputCaching.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\Caching\OutputCaching.aspx.designer.cs">
+      <DependentUpon>OutputCaching.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Learn\Caching\OutputCaching2.aspx.cs">
+      <DependentUpon>OutputCaching2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Learn\Caching\OutputCaching2.aspx.designer.cs">
+      <DependentUpon>OutputCaching2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Learn\DataControls\DataList.aspx.cs">
       <DependentUpon>DataList.aspx</DependentUpon>

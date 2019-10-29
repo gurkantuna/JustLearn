@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AspNet_SqlCacheTablesForChangeNotification.cs" />
     <Compile Include="Models\Alphabetical_list_of_product.cs" />
     <Compile Include="Models\aspnet_Applications.cs" />
     <Compile Include="Models\aspnet_Membership.cs" />
