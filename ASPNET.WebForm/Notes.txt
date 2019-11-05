@@ -41,3 +41,27 @@ DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwi
   </location>
 
  benzeri bir yapı kurabilirsin. Sayfa içinde farklı içerik göstermek için LoginView componentinin <AnonymousTemplate>, <LoggedInTemplate> ve <RoleGroups><asp:RoleGroup Roles="Admin"><ContentTemplate>Welcome Admin</asp:RoleGroup> templatelerini kullanabilirsin.
+
+ /************************ ASPNET MVC **************************/
+
+ * Controllers ve View zorunludur. Models başka bir projeden de çekilebilir. Models içindeki classlar veri tabanı tablolarını temsil eder. Content klasörü dışardan eklenen dosyalardır. App_Start projenin başlangıcı ile ilgili metodların bulunduğu class lar bulunur. Script dosyaları Scripts klasöünde bulunur.
+
+* Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur.
+
+* @RenderBody() Layout sayfasında ana dekiği açar ve bu yüzden sadece bir kez bulunabilir. Farklı bir delik açmak için @RenderSection("head"), @RenderSection("script",required:false) gibi açılır.  Layoutda isimlendirelien delik 
+
+@section scripts{
+
+} şeklinde kullanılır.
+
+* @ Razor Engine bir satırdan fazla yazmak için @{ } scope kullanılır. @* *@ yorum satırıdır.
+
+* Önce Controller eklenir. Action yazılıp Action içinde sağ tıklayıp Add View denerek View ismi verilir.
+
+* Controllerdan View a birkaç yöntem ile veri gönderilebilir.
+ 
+ 1-Model yöntemi ile göndermek: View(object model); View metodundan çekilen herhangi bir object model olarak döndürülür. View tarafında dönen bu object verinin asıl doğru tipini belirtmek için directive dışında @model [VeriTipi] olarak yakalanır. Ör: @model List<Product>. Ulaşılamayan class için @using keyword ile namespace eklenmelidir. View tarafında kullanmak için nesne Model propertysi ile çekilir. Yalnız bu yöntem sadece tek bir tip geldiğinde kullanılır. Bunu aşmak için Producties, Categoires gibi birden falza tipte propertyler barındıran ayrı bir class oluşturulabilir. 
+
+ 2-ViewBag yöntemi ile göndermek: ViewBag dynamic tiptir. İçine verilen herhangi bir tipi direk View tarafına taşır. ViewBag.AnyThings gibi vverdiğimiz bir Anonymus Type ya da belli bir tipi view tarafında yine aynı isimle yakalarız.
+
+* Yazdığımız herhangi bir ActionResult default [HttpGet] ile işaretlenmiş olduğu için direk http get olarak çalışır. Örneğin ürün eklenecek bir sayfa için Product{controller}/Add{view} yazmış olalım. Öncelikle ürününekleneceği componentlerin olduğu sayfayı kullanıcıya göstermek için bir [HttpGet]ActionResult Add() yazılarak kategori, tedairkçi gibi listeler de çekilirek bu viewa döndürülür(çünkü ui için bunlara ihtyiaç var). Daha sonra componentlerden toplanan değerler post ile gönderilebilmesi için [HttpPost]ActionResult Add(Product p) metodu yazılır. View dan değerleri yakalayabilmek için de Product class içindeki property isimleri birebir aynıları view tarafındaki component name olarak verilir. Yani örneğin ürün ismi alacağımız textbox name="ProductName" olarak girmek zorunludur. Yazdığımız bu post ActionResult ekleme işini yaptıktan sonra return View() ile dönersek arayüzde ihtiyaç duyduğu category, supplier gibi listelere ihtyiaç duyacağı için patlayacaktır. Bu yüzden RedirectToAction("Index") gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a yönlendirmek gerekir. Eğer göndereceğimiz ActionReult başka bir controller içinde ise RedirectToAction() 2.parametresinde bu isim girilir.

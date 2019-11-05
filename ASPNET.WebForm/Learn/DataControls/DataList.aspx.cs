@@ -10,15 +10,7 @@ using System.Web.UI.WebControls;
 namespace ASPNET.WebForm.DataControls {
     public partial class DataList : System.Web.UI.Page {
 
-        private static List<Category> _categories;
-
-        public static List<Category> Categories {
-            get {
-                _categories = _categories ?? SiteBase.DbContext.Categories.ToList();
-                return _categories;
-            }
-            set { _categories = value; }
-        }
+        NorthwindContext DbContext = new NorthwindContext();
 
         protected void Page_Load(object sender, EventArgs e) {
             if (!Page.IsPostBack) {
@@ -27,7 +19,7 @@ namespace ASPNET.WebForm.DataControls {
         }
 
         private void LoadDataList() {
-            DataList1.DataSource = SiteBase.DbContext.Products.ToList();
+            DataList1.DataSource = DbContext.Products.ToList();
             DataList1.DataBind();
         }
 
@@ -46,10 +38,10 @@ namespace ASPNET.WebForm.DataControls {
                         p.UnitPrice = decimal.Parse(textUnitPrice.Text);
                         p.UnitsInStock = short.Parse(textUnitsInStock.Text);
 
-                        SiteBase.DbContext.Products.Add(p);
+                        DbContext.Products.Add(p);
                         break;
                 }
-                SiteBase.DbContext.SaveChanges();
+                DbContext.SaveChanges();
                 LeaveEdit();
             }
         }
@@ -75,10 +67,10 @@ namespace ASPNET.WebForm.DataControls {
                     var productName = textProductName.Text;
                     var unitPrice = decimal.Parse(textUnitPrice.Text);
                     var productId = Convert.ToInt32(e.CommandArgument);
-                    var product = SiteBase.DbContext.Products.FirstOrDefault(p => p.ProductID == productId);
+                    var product = DbContext.Products.FirstOrDefault(p => p.ProductID == productId);
                     product.ProductName = productName;
                     product.UnitPrice = unitPrice;
-                    SiteBase.DbContext.SaveChanges();
+                    DbContext.SaveChanges();
                     DataList1.EditItemIndex = -1;//Finished update operation and leave EditItemTemplate
                     LoadDataList();
                 }
@@ -93,10 +85,10 @@ namespace ASPNET.WebForm.DataControls {
             if (e.CommandName == "Delete") {
                 try {
                     int productId = Convert.ToInt32(e.CommandArgument);
-                    var product = SiteBase.DbContext.Products.FirstOrDefault(p => p.ProductID == productId);
+                    var product = DbContext.Products.FirstOrDefault(p => p.ProductID == productId);
 
-                    SiteBase.DbContext.Products.Remove(product);
-                    SiteBase.DbContext.SaveChanges();
+                    DbContext.Products.Remove(product);
+                    DbContext.SaveChanges();
                     LoadDataList();
                     DataList1.EditItemIndex = -1;//Finished delete operation and leave EditItemTemplate
                     this.ShowJSMessageBox($"{product.ProductName} deleted succesfully");
@@ -120,7 +112,7 @@ namespace ASPNET.WebForm.DataControls {
 
             if (e.Item.ItemType == ListItemType.Header) {
                 var ddlCategories = e.Item.FindControl("ddlCategories") as DropDownList;
-                ddlCategories.DataSource = Categories;
+                ddlCategories.DataSource = DbContext.Categories.ToList();
                 ddlCategories.DataValueField = "CategoryId";
                 ddlCategories.DataTextField = "CategoryName";
                 ddlCategories.DataBind();

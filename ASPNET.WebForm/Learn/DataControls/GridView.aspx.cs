@@ -9,6 +9,8 @@ using static JustLearn.HelperSettings.HelperString;
 
 namespace ASPNET.WebForm.DataControls {
     public partial class GridView : System.Web.UI.Page {
+        
+        NorthwindContext DbContext = new NorthwindContext();
 
         protected void Page_Load(object sender, EventArgs e) {
             if (!IsPostBack) {
@@ -36,7 +38,7 @@ namespace ASPNET.WebForm.DataControls {
         }
 
         private DbSet<Product> DbProducts {
-            get { return SiteBase.DbContext.Products; }
+            get { return DbContext.Products; }
         }
 
         protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e) {
@@ -84,7 +86,7 @@ namespace ASPNET.WebForm.DataControls {
 
         private void SaveChanges() {
             try {
-                SiteBase.DbContext.SaveChanges();
+                DbContext.SaveChanges();
             }
             catch (Exception ex) {
                 CustomExtensions.ShowJSMessageBox(this, GeneralErrorMessage, ex);
@@ -109,7 +111,7 @@ namespace ASPNET.WebForm.DataControls {
                             product.UnitPrice *= 1.1m;
                             break;
                     }
-                    SaveChanges();
+                    SaveChanges();                    
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pattern.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,9 @@ using static JustLearn.HelperSettings.HelperString;
 
 namespace ASPNET.WebForm.Learn.Caching {
     public partial class DataCaching : System.Web.UI.Page {
+
+        NorthwindContext DbContext = new NorthwindContext();
+
         protected void Page_Load(object sender, EventArgs e) {
 
             if (!IsPostBack) {
@@ -25,10 +29,10 @@ namespace ASPNET.WebForm.Learn.Caching {
             */
 
             if (Cache[Caches.Products] == null) {
-                Cache.Insert(Caches.Products, SiteBase.DbContext.Products.ToList(), null, DateTime.MaxValue, TimeSpan.FromSeconds(10));
+                Cache.Insert(Caches.Products, DbContext.Products.ToList(), null, DateTime.MaxValue, TimeSpan.FromSeconds(10));
             }
 
-            gvProducts.DataSource = SiteBase.DbContext.Products.ToList();
+            gvProducts.DataSource = DbContext.Products.ToList();
             gvProducts.DataBind();
         }
     }

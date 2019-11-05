@@ -9,6 +9,9 @@ using System.Web.UI.WebControls;
 
 namespace ASPNET.WebForm.DataControls {
     public partial class Repeater : System.Web.UI.Page {
+
+        NorthwindContext DbContext = new NorthwindContext();
+
         protected void Page_Load(object sender, EventArgs e) {
 
             if (!IsPostBack) {
@@ -17,17 +20,17 @@ namespace ASPNET.WebForm.DataControls {
         }
 
         private void LoadProducts() {
-            repeater1.DataSource = SiteBase.DbContext.Products.ToList();
+            repeater1.DataSource = DbContext.Products.ToList();
             repeater1.DataBind();
         }
 
         protected void LinkButtonDesc_Click(object sender, EventArgs e) {
-            repeater1.DataSource = SiteBase.DbContext.Products.ToList().OrderByDescending(x => x.UnitPrice);
+            repeater1.DataSource = DbContext.Products.ToList().OrderByDescending(x => x.UnitPrice);
             repeater1.DataBind();
         }
 
         protected void LinkButtonAsc_Click(object sender, EventArgs e) {
-            repeater1.DataSource = SiteBase.DbContext.Products.ToList().OrderBy(x => x.UnitPrice);
+            repeater1.DataSource = DbContext.Products.ToList().OrderBy(x => x.UnitPrice);
             repeater1.DataBind();
         }
 
@@ -73,7 +76,7 @@ namespace ASPNET.WebForm.DataControls {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem) {
 
                 var productId = Convert.ToInt32(e.CommandArgument);
-                var product = SiteBase.DbContext.Products.FirstOrDefault(p => p.ProductID == productId);
+                var product = DbContext.Products.FirstOrDefault(p => p.ProductID == productId);
 
                 if (product != null) {
 
@@ -83,7 +86,7 @@ namespace ASPNET.WebForm.DataControls {
                             product.UnitPrice *= 1.1m;
                             break;
                     }
-                    SiteBase.DbContext.SaveChanges();
+                    DbContext.SaveChanges();
                     LoadProducts();
                 }
             }
