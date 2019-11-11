@@ -1,5 +1,4 @@
-namespace Pattern.Domain.Models
-{
+namespace Pattern.Domain.Models {
     using System;
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +7,7 @@ namespace Pattern.Domain.Models
     public partial class NorthwindContext : DbContext {
         public NorthwindContext()
             : base("name=NorthwindContext") {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<aspnet_Applications> aspnet_Applications { get; set; }

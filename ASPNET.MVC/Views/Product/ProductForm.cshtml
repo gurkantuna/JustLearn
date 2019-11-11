@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "New";
+}
+
+@using Pattern.Domain.Models
+@model Product
+<h2>Product</h2>
+@Html.ValidationSummary()
+
+<div id="message">
+
+</div>
+
+@using (Ajax.BeginForm("Save", "Product", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "message" })) {
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.ProductName)
+        @Html.TextBoxFor(p => p.ProductName, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.ProductName)
+    </div>
+
+    @Html.HiddenFor(p => p.ProductID)
+
+    <button type="submit" class="btn btn-success">Save</button>
+}
+
+@*@using (Html.BeginForm("Save", "Product", method: FormMethod.Post)) {
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(p => p.ProductName)
+            @Html.TextBoxFor(p => p.ProductName, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ProductName)
+        </div>
+
+        @Html.HiddenFor(p => p.ProductID)
+
+        <button type="submit" class="btn btn-success">Save</button>
+    }*@
+
+
+@*<form action="/Product/New" method="post">
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" name="ProductName" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success">Add</button>
+    </form>*@
+
+@section script{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

@@ -1,0 +1,15 @@
+﻿@using ASPNET.MVC.ViewModels
+@model MessageViewModel
+
+@{
+    if (Model.IsSuccess) {
+        <div class="alert alert-success">
+            <strong>@Model.Message!</strong><a href="@Model.Url">@Model.LinkText</a>
+        </div>
+    }
+    else {
+        <div class="alert alert-warning">
+            <strong>@Model.Message!</strong><a href="@Model.Url">@Model.LinkText</a>
+        </div>
+    }
+}

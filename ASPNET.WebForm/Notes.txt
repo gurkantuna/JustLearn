@@ -1,5 +1,7 @@
 ﻿İngilizcelerini daha sonra hallederiz ;)
 
+* Tüm uygulamada geçerli olacak bir ayarı web.config <appSettings> tag altına key ekliyerek yapabilirsin. Örneğin <add key="LogoWidth" value="300"/>
+
 * <% Server tagleri directive anlamına gelir. Serverda çalıştırılacak C# kodları bu tagler arasına yazılır. <%@ directive yazmamızı sağlar o sağyfaya özel temel özellikleri veririz. <%: string kütüphanelerini(Response.Write("") ile aynı işi yapar), <% veri tabanı ile ilgili kütüphanelerini yükler. 
 
 * runat="server" attribute ile işaretlenen control artık server tarafından ulaşılabilir olur. Örneğin <div runat="server" /> HtmlGenericControl olarak döndürür.
@@ -21,13 +23,33 @@ bunu LinkButton eventi içinde kod çalıştırırken, HyperLink NavigateURL att
 
 * Repeater ile Datalist farkı, repeater direk verileri basarken DataList tablo olarak basar. Yine Datalist avantajı veriyi düzenleme moduna geçebilmesi. EditItemTemplate barındırır.
 
-* Birden fazla değer taşıyacaksak HiddenField içinde tutmak mantıklı.
+* Güncelleme vb işlemler için view haliyle bir id ya da uniqu bir parametre isteyecektir. Bu id formdan post edilmezse id=0 geleceği için bunu bir insert gibi düşünüp update yerine bir insert db ye gönderir. Bu yüzden form içinde bu id kullancııdan habersiz gönderilmelidir. Bunun için HiddenField(@Html.HiddenFor(m=>m.Id)) içinde tutmak mantıklıdır.
 
 * ViewState nesnesi ile QueryString arasındaki fark: QueryString ile farklı sayfalar arasında veri taşıyabiliriz. ViewState ise farklı bir sayfaya geçildiğinde silinir, sadece o sayfa için geçerlidir.
 
 * MemberShip için Tools > Command Line > Developer Command Prompt > aspnet_rgsql ile db tabloları insert ediyoruz. aspnet_regsql -? ile verilecek parametreleri görebiliriz. 
 Web.config >system.web> içine C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\machine.config içinde <membership> tag seçip yapıştırıyoruz. Giriş-çıkış kontrolleri için LoginStatus kullanbilirsin.
 DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwind için cache enable çekme komutu aspnet_regsql -S .\sqlexpress -d Northwind -U sa -P 123 -ed yazılırak önce cache enable çekilir. Daha sonra -t Products -et ile tablo için trigger eklenir. 
+
+* MemberShip.GetAllUsers(), MemberShip.CreateUser(string userName,string password...,out MemberShipCreateStatus status),MemberShip.GetUser(), MemberShipUser.ChangePassword(), MemberShipUser.ResetPassword()
+* Üye yönetiminin aktif olabilmesi için Web.Config içinde 
+  
+  Windows seçilirse windows oturumu açmışsa giriş yapabilir, None seilirse hiçbir şekilde giriş yapılmaz, Forms AspNet üye yönetimi ya da kendi üye yapını kullanırsan seçilmeli
+  defaultUrl giriş başarılı ise hangi sayfaya yönlendirildsin.
+  logiUrl giriş yapma sayfası
+  timeout varsayılan 30 dakikadır
+  slidingExpiration eğer timeouta verdiğimiz 60 dakika içinde herhangi bir hareket görürse 60 dakikayı yeniler
+  cookieless giriş yapan kullanıcı cookiede tutulsun
+  createPersistentCookie arayüzde beni hatırla seçilip seçilmemesine göre tru ya da false verilir. true verilirse cookie işlemlerini AspNet kendisi halleder
+
+  <authentication mode="Forms">
+   <forms defaultUrl="Home/Index" loginUrl="Home/Login" timeOut="60" slidingExpiration="true">
+   </forms>
+  </authentication>
+
+  MemberShip.ValidateUser(string userName,string password) eğer true dönerse FormsAuthentication.RedirectFromLoginPage(string userName,bool createPersistentCookie) ile kullanıcıyı doğrulamış oluruz.FormsAuthetantication.SignOut() çıkış yaptırır.
+
+* Roles.GetAllRoles(), Roles.CreateRole(string userName), Roles.AddUserToRole()
 
 * Her klasörün kendi  web.config dosyası olabilir. Klasör içindeki web.cofigde <roleManager> tag ile içinde bulunduğu klasörün izinleri ayarlanabilir. örnegin Admin klasörü içinde <allow role="Admin"/> vermişsek <deny users="*"/> ile diğer kullancılıarın bu klasöre girişini kapatmak gerekir. örnegin Users klasörü için de <deny users="?"/> giriş yapan kullanıcılara izin verir diğer tümünü engeller. Sayfa basında girmesini istediğin kullanıcılar ya da roller için
 
@@ -44,6 +66,8 @@ DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwi
 
  /************************ ASPNET MVC **************************/
 
+ * Controler kullanıcı isteklerini yakalayan kısımdır. View kullanıcının gördüğü arayüz. Model verileri tanımaldığımız kısım.
+
  * Controllers ve View zorunludur. Models başka bir projeden de çekilebilir. Models içindeki classlar veri tabanı tablolarını temsil eder. Content klasörü dışardan eklenen dosyalardır. App_Start projenin başlangıcı ile ilgili metodların bulunduğu class lar bulunur. Script dosyaları Scripts klasöünde bulunur.
 
 * Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur.
@@ -54,14 +78,57 @@ DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwi
 
 } şeklinde kullanılır.
 
-* @ Razor Engine bir satırdan fazla yazmak için @{ } scope kullanılır. @* *@ yorum satırıdır.
+* @ Razor Engine bir satırdan fazla yazmak için @{ } scope kullanılır. Aslında bunun için View oluşturulduğunda yukarda açılan @{ } bloğu global vb. kullanımmış gibi yararlı olabilir. null kontrolü gibi bir işleme göre karar verip yapacak benzeri ternary operatör gibi işlemler için ise @() şeklinde razor kullanılır.   @* *@ yorum satırıdır. 
 
 * Önce Controller eklenir. Action yazılıp Action içinde sağ tıklayıp Add View denerek View ismi verilir.
 
 * Controllerdan View a birkaç yöntem ile veri gönderilebilir.
  
- 1-Model yöntemi ile göndermek: View(object model); View metodundan çekilen herhangi bir object model olarak döndürülür. View tarafında dönen bu object verinin asıl doğru tipini belirtmek için directive dışında @model [VeriTipi] olarak yakalanır. Ör: @model List<Product>. Ulaşılamayan class için @using keyword ile namespace eklenmelidir. View tarafında kullanmak için nesne Model propertysi ile çekilir. Yalnız bu yöntem sadece tek bir tip geldiğinde kullanılır. Bunu aşmak için Producties, Categoires gibi birden falza tipte propertyler barındıran ayrı bir class oluşturulabilir. 
+ 1-Model yöntemi ile göndermek: View(object model); View metodundan çekilen herhangi bir object model olarak döndürülür. View tarafında dönen bu object verinin asıl doğru tipini belirtmek için directive dışında @model [VeriTipi] olarak yakalanır. Ör: @model List<Product>. Ulaşılamayan class için @using keyword ile namespace
+ eklenmelidir. View tarafında kullanmak için nesne Model propertysi ile çekilir. Yalnız bu yöntem sadece tek bir tip geldiğinde kullanılır. Bunu aşmak için Producties, Categoires gibi birden falza tipte propertyler barındıran ayrı bir class oluşturulabilir. 
 
  2-ViewBag yöntemi ile göndermek: ViewBag dynamic tiptir. İçine verilen herhangi bir tipi direk View tarafına taşır. ViewBag.AnyThings gibi vverdiğimiz bir Anonymus Type ya da belli bir tipi view tarafında yine aynı isimle yakalarız.
 
-* Yazdığımız herhangi bir ActionResult default [HttpGet] ile işaretlenmiş olduğu için direk http get olarak çalışır. Örneğin ürün eklenecek bir sayfa için Product{controller}/Add{view} yazmış olalım. Öncelikle ürününekleneceği componentlerin olduğu sayfayı kullanıcıya göstermek için bir [HttpGet]ActionResult Add() yazılarak kategori, tedairkçi gibi listeler de çekilirek bu viewa döndürülür(çünkü ui için bunlara ihtyiaç var). Daha sonra componentlerden toplanan değerler post ile gönderilebilmesi için [HttpPost]ActionResult Add(Product p) metodu yazılır. View dan değerleri yakalayabilmek için de Product class içindeki property isimleri birebir aynıları view tarafındaki component name olarak verilir. Yani örneğin ürün ismi alacağımız textbox name="ProductName" olarak girmek zorunludur. Yazdığımız bu post ActionResult ekleme işini yaptıktan sonra return View() ile dönersek arayüzde ihtiyaç duyduğu category, supplier gibi listelere ihtyiaç duyacağı için patlayacaktır. Bu yüzden RedirectToAction("Index") gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a yönlendirmek gerekir. Eğer göndereceğimiz ActionReult başka bir controller içinde ise RedirectToAction() 2.parametresinde bu isim girilir.
+ 3- ViewData["HelloWorld"]=new Product{ Id=1,Name="Name",Price=100,Stock=10 } gibi kullanabiliriz.
+
+ * ViewData ve ViewBag için aynı string key kullanılamaz. Kullanılırsa referans tipli bir collection olduğu için ViewBag VievData valuesunu eziyor ve değerler aynı oluyor.
+
+* Yazdığımız herhangi bir ActionResult default [HttpGet] ile işaretlenmiş olduğu için direk http get olarak çalışır. Örneğin ürün eklenecek bir sayfa için Product{controller}/Add{view} yazmış olalım. Öncelikle ürününekleneceği componentlerin olduğu sayfayı kullanıcıya göstermek için bir [HttpGet]ActionResult Add() yazılarak kategori,
+tedairkçi gibi listeler de çekilirek bu viewa döndürülür(çünkü ui için bunlara ihtyiaç var). Daha sonra componentlerden toplanan değerler post ile gönderilebilmesi için [HttpPost]ActionResult Add(Product p) metodu yazılır. View dan değerleri yakalayabilmek için de Product class içindeki property isimleri birebir aynıları view tarafındaki
+component name olarak verilir. Yani örneğin ürün ismi alacağımız textbox name="ProductName" olarak girmek zorunludur. Yazdığımız bu post ActionResult ekleme işini yaptıktan sonra return View() ile dönersek arayüzde ihtiyaç duyduğu category, supplier gibi listelere ihtyiaç duyacağı için patlayacaktır. Bu yüzden RedirectToAction("Index") 
+gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a yönlendirmek gerekir. Eğer göndereceğimiz ActionReult başka bir controller içinde ise RedirectToAction() 2.parametresinde bu isim girilir.
+
+* RedirectToAction() metodu gibi örneğin Ekleme ve Güncelleme için aynı view kullanmak için view ları birbiri arasında return edebilirsin. ProductForm gibi bir isimle view oluşturup /Product/Add ve /Product/Update için return View("ProductForm") şeklinde dönebilirsin.
+
+* Eğer kullanıcı eliyle bir querystring ya da adres doldurup modeli boş göndermeye çalışırsa if(model==null) return HttpNotFound() döndürebilirsin.
+
+* Örneğin Product/Update/1 gibi gönderilen bir id otomatik olarak QueryString ile gönderilmiş olur bunu yakalamak için gönderilen querystring Request.QueryString[] yerine parametrenin ismi ActionResult metoda parametre geçerek yakalanabilir.
+
+* [ActionName] attribute ile ActionResult döndüren metodun ismi değişik seçilip arayüzden gönderilen ismi farklı ayarlanabilir. Örneğin DeleteConfirmed mdetoduna [ActionName("Delete")] attribute verilirse /Product/Delete/1 şeklinde çalışır. 
+
+* Üye yönetim sistemi ile kullanıcı doğrulaması için projenin RouteConfig ayarları yapılmazsa üyelik sistemi olsa da direk siteye giriş yapılmış gibi olur. Bu yüzden her controllera attribute verilemlidir.
+  
+  [Authorize] giriş yapılması zorunludur. Parametreli kullnaım modelinde örneğin sadece Admin açmasını istediğimiz bir sayfa için [Authorize(Roles="Admin, Moderator")] ya da [Authorize(Users="John")] şeklinde kullanılabilir.
+  [AllowAnonymous] giriş yapılması zorunlu değildir. İstnen herhangi bir metoda verilebilir. Controller için [Authorize] verilse de metoddan verilen [AllowAnonymous] -bunu ezecektir.
+  Tüm uygulama için Authorize kullanmak istersek Global.asax Application_Start(){ GlobalFilters.Filters.Add(new AuthorizeAttribute()); } ancak böyle olduğunda Login dahi olunamaz. Bu yüzden Login yapılan metodlar ya da controller için [AllowAnonymous] verilmelidir.
+
+  * LazyLoading kullanma kararı önemli çünkü LazyLoading yaptığın tablo eğer çok kalabalık değilse kullanmak mantıklıdır. Örneğin 10 tane kaftegoriye bağlı 100000 ürünlü bir tabloda Category ile joinleyip çekmek gelecek sorguya 
+   100000*10(Category.Count())*4(Kategori kolonları-CategoryId,CategoryName,Description,Picture) ekstradan 4 milyon scalar hücre ekleyecektir. Oysa LazyLoading kullanıldığında her satır için değil 10 kategorinin her biri için sadece 
+   bir kez sorgu atılarak rame alınır. Yani bir kategori çekilmişse alttaki aynı kategoride bir ürün için tekrar db ye gidilmez. Haliyle milyonlarca eklenecek hücredense 10 satır eklemek çok daha mantıklıdır. Ama çekilecek tablo 
+   örneğin 10 yerine 1000 kategori varsa bu sefer kullanmamak daha manyıklı bir seçim olabilir. Ancak en mantıklısı Include ile joinlemektense çekilecek modelde asdece ihtiyaç duyulan kolonların dönülmesidir.
+
+* @Html.ActionLink returns a tag like <a href=”/somecontroller/someaction/somedata”>link text</a>
+  @Html.Action returns a string like /somecontroller/someaction/somedata
+
+  @Html.ActionLink("link text", "someaction", "somecontroller", new { id = "123" }, null)
+  <a href="/somecontroller/someaction/123">link text</a>
+
+  Url.Action("someaction", "somecontroller", new { id = "123" })
+  /somecontroller/someaction/123
+
+ * Ajax.ActionLink() PostBack yapmadan çalışması için jquery.unobstrisive.ajax NuGet üzerinden yüklenmelidir.
+
+ * Html.RenderAction() geriye scalar bir değer söndüren metodlarda işe yarayabilir. Örneğin sepetteki ürün sayısı ya da fiyat toplamı gibi. Views/Shared/_Navbar 10.satıra bakılabilir. decimal ya da int değerleri string olarak ya da int döndürmek yerine ActionResult metod tanımlayıp PartialView() döndürlüebilir. Metoddan dönecek değerde ViewBag ile view'a döndürülebilir.
+
+ * [OutputCache(Duration = 30)] attribute ActionResult yada başka bir metod için 30 saniye cache atılır.s
+

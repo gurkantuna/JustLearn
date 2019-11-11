@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@using Pattern.Domain.Models
+@model List<Category>
+
+@Html.ActionLink("New Category", "New", "Category", null, new { @class = "btn btn-success" })
+
+<h2>Categories</h2>
+
+<table class="table table-bordered" id="tblCategory">
+    <thead>
+        <tr>
+            <th>Category Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model) {
+            <tr>
+                <td>@c.CategoryName</td>
+                <td>@c.Description</td>
+                <td><img src="@string.Format("data:image/jpg;base64,{0}", c.Base64String)" /></td>
+                <td>
+                    @Html.ActionLink("Update", "Update", "Category", new { id = c.CategoryID }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Delete", "Delete", "Delete", new { id = c.CategoryID }, new { @class = "btn btn-warning" })
+                    <a class="btn btn-warning btnCatDel" data-id="@c.CategoryID">Delete(Ajax)</a>
+                </td>
+                <td>@Ajax.ActionLink("Show Products", "ShowProducts", "Category", new { id = c.CategoryID }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "productList" }, new { @class = "btn btn-info" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="productList"></div>
+@section script{
+    <script src="~/Scripts/custom.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+}
+

@@ -1,23 +1,21 @@
-namespace Pattern.Domain.Models
-{
+namespace Pattern.Domain.Models {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Product
-    {
+    public partial class Product {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
-        {
+        public Product() {
             Order_Details = new HashSet<Order_Detail>();
         }
 
         public int ProductID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "You have to enter Product Name field")]
         [StringLength(40)]
+        [Display(Name = "Name")]
         public string ProductName { get; set; }
 
         public int? SupplierID { get; set; }
@@ -27,6 +25,7 @@ namespace Pattern.Domain.Models
         [StringLength(20)]
         public string QuantityPerUnit { get; set; }
 
+        [Range(1, 10000, ErrorMessage = "Between 1 and 10000 ")]
         [Column(TypeName = "money")]
         public decimal? UnitPrice { get; set; }
 

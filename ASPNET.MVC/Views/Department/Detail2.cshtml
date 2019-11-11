@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Detail2";
+}
+@using ASPNET.MVC.ViewModels
+@model ASPNET.MVC.ViewModels.DepartmentViewModel
+
+<h2>Detail2</h2>
+
+Departmant Id is @Model.Department.Id and Name is @Model.Department.Name
+
+<fieldset style="margin:50px">
+    <legend>Personels</legend>
+    <table>
+        <thead>
+            <tr>
+                <th>Personel Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Personels) {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</fieldset>

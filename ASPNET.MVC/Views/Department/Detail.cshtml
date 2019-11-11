@@ -1,0 +1,12 @@
+﻿@using ASPNET.MVC.Models
+@{
+    ViewBag.Title = "Detail";
+    var d2 = ViewData["dep"] as Department;
+    var d3 = ViewBag.Department as Department;
+}
+
+<h2>Department and Personel Detail</h2>
+
+<p>Department1 id is @ViewData["id"]</p>
+<p>Department2 id is @d2.Id and name is @d2.Name</p>
+<p>Department3 id is @d3.Id and name is @d3.Name</p>

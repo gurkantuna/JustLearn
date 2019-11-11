@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Products";
+}
+@using Pattern.Domain.Models
+@model List<Product>
+@DateTime.Now
+
+@*<a href="/Product/New" class="btn btn-success">New Product</a>*@
+@Html.ActionLink("New Product", "New", null, new { @class = "btn btn-success" })
+<h2>Products</h2>
+<table class="table table-bordered" id="tblProduct">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th></th>
+            <th>Stock</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var p in Model) {
+        <tr>
+            <td>@p.ProductName</td>
+            <td>@(p.Category != null ? p.Category.CategoryName : string.Empty)</td>
+            <td>@(p.UnitPrice != null ? string.Format("{0:n}", p.UnitPrice) : string.Empty)</td>
+            <td>
+                @{
+                    var isChip = false;
+                    if (p.UnitPrice < 50) {
+                        isChip = true;
+                    }
+
+                    if (isChip) {
+                        <label class="label label-primary">Chip</label>
+                    }
+                    else {
+                        <label class="label label-warning">Expensive</label>
+                    }
+                }
+            </td>
+            <td>@(p.UnitsInStock != null ? p.UnitsInStock.ToString() : string.Empty)</td>
+            <td>
+                @{
+                    var inStock = false;
+                    if (p.UnitsInStock > 10) {
+                        inStock = true;
+                    }
+
+                    if (inStock) {
+                        <label class="label label-primary">In Stock</label>
+                    }
+                    else {
+                        <label class="label label-warning">Not In Stock</label>
+                    }
+                }
+            </td>
+            <td>
+                @*<a href="/Product/Update/@p.ProductID" class="btn btn-primary">Update</a>*@ &nbsp;
+                @Html.ActionLink("Update", "Update", "Product", new { id = p.ProductID }, htmlAttributes: new { @class = "btn btn-primary" })
+                @*<a href="/Product/Delete/@p.ProductID" class="btn btn-danger">Delete</a>*@
+                @Html.ActionLink("Delete", "Delete", "Product", new { id = p.ProductID }, htmlAttributes: new { @class = "btn btn-danger" })
+                <a class="btn btn-danger btnProdDelete" data-id="@p.ProductID">Delete(Ajax)</a>
+            </td>
+        </tr>
+    }
+</table>
+@section script{
+    <script src="~/Scripts/custom.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+}

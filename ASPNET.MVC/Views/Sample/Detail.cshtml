@@ -1,0 +1,15 @@
+﻿@using ASPNET.MVC.Models
+@{
+    ViewBag.Title = "Detail";
+    var learn = ViewData["learn"] as Learn;
+    var learn2 = ViewBag.Learn2 as Learn;
+}
+
+<h2>Sample Detail</h2>
+
+<p>Id is @ViewData["id"]</p>
+
+<p>Learn Id is @learn.Id and name is @learn.Name </p>
+
+<p>Learn2 Id is @learn2.Id and name is @learn2.Name</p>
+

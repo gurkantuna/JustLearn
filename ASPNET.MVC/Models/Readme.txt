@@ -1,0 +1,1 @@
+﻿You can find model classes in 6.Design Patterns/6.1 Repository Pattern/6.1.1 Domain Layer

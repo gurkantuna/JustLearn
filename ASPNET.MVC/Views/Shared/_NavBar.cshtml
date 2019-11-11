@@ -1,0 +1,27 @@
+﻿@using ASPNET.MVC.Helpers
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">JustLearn</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/Product/Index">Products TotalPrice:
+                @{Html.RenderAction("TotalPrice", "Product");}
+                @*ViewBag.TotalPrice*@
+                </a></li>
+            <li><a href="/Category/Index">Categories</a></li>
+            <li><a href="javascript:">Page 2</a></li>
+            <li><a href="javascript:">Page 3</a></li>
+            @if (User.IsInRole("Admin")) {
+                <li><a href="javascript:">Admin page </a></li>
+            }
+            @if (User.IsInAllRoles("Admin", "Moderator")) {@*Extension method for more than one roles*@
+            <li><a href="javascript:">Admin and Moderator page </a></li>
+        }
+            <li>@(User.Identity.IsAuthenticated ? $"Welcome {User.Identity.Name}" : string.Empty) </li>
+            <li>@*@HttpContext.Current.User.Identity.Name*@</li>
+        </ul>
+    </div>
+</nav>

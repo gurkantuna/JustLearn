@@ -1,0 +1,18 @@
+﻿@using Pattern.Domain.Models
+@model List<Product>
+
+<h1>Show Products</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+        </tr>
+    </thead>
+
+    @foreach (var p in Model) {
+        <tr>
+            <td>@p.ProductName</td>
+        </tr>
+    }
+</table>
