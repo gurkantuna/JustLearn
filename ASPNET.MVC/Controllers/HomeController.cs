@@ -20,7 +20,7 @@ namespace ASPNET.MVC.Controllers {
             return "<h1>Hello World2</h1>";
         }
 
-        /* Custpm Error Handling
+        /* Custom Error Handling
            [HandleError(ExceptionType = typeof(SqlException), View = "SqlExceptionView")]
            [HandleError(ExceptionType = typeof(DivideByZeroException), View = "ZeroExceptionView")]
         */
@@ -84,9 +84,9 @@ namespace ASPNET.MVC.Controllers {
         }
 
         //Firstly routes.MapMvcAttributeRoutes(); in RouteConfig.cs
-        [Route("Person/List/{sort}/{page}")]
-        public ActionResult GetAllPerson(string sort, int page) {
-            return Content($"Sort: {sort}, Page: {page}");
+        [Route("Person/List/{sort}/{page}/{year}/{month:regex(\\d{4}):range(1,12)}")]
+        public ActionResult GetAllPerson(string sort, int page, int year, int month) {
+            return Content($"Sort: {sort}, Page: {page} Year: {year} Month: {month}");
         }
 
         // GET: Home/Sample2

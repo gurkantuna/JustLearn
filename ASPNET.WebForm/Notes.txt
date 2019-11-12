@@ -85,11 +85,15 @@ DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwi
 * Controllerdan View a birkaç yöntem ile veri gönderilebilir.
  
  1-Model yöntemi ile göndermek: View(object model); View metodundan çekilen herhangi bir object model olarak döndürülür. View tarafında dönen bu object verinin asıl doğru tipini belirtmek için directive dışında @model [VeriTipi] olarak yakalanır. Ör: @model List<Product>. Ulaşılamayan class için @using keyword ile namespace
- eklenmelidir. View tarafında kullanmak için nesne Model propertysi ile çekilir. Yalnız bu yöntem sadece tek bir tip geldiğinde kullanılır. Bunu aşmak için Producties, Categoires gibi birden falza tipte propertyler barındıran ayrı bir class oluşturulabilir. 
+  eklenmelidir. View tarafında kullanmak için nesne Model propertysi ile çekilir. Yalnız bu yöntem sadece tek bir tip geldiğinde kullanılır. Bunu aşmak için Producties, Categoires gibi birden falza tipte propertyler barındıran ayrı bir class yani 5.maddedeki VievModel oluşturulmalıdır.
+ 
+ 2- Model yöntemi ve aşağıdakiler nadiren işe yarar asıl kullanılması gereken kendimize göre oluşturuduğumuz sınıflar olan ViewModel dir.
 
- 2-ViewBag yöntemi ile göndermek: ViewBag dynamic tiptir. İçine verilen herhangi bir tipi direk View tarafına taşır. ViewBag.AnyThings gibi vverdiğimiz bir Anonymus Type ya da belli bir tipi view tarafında yine aynı isimle yakalarız.
+ 3- ViewBag yöntemi ile göndermek: ViewBag dynamic tiptir. İçine verilen herhangi bir tipi direk View tarafına taşır. ViewBag.AnyThings gibi   verdiğimiz bir Anonymus Type ya da belli bir tipi view tarafında yine aynı isimle yakalarız.
 
- 3- ViewData["HelloWorld"]=new Product{ Id=1,Name="Name",Price=100,Stock=10 } gibi kullanabiliriz.
+ 4- ViewData["HelloWorld"]=new Product{ Id=1,Name="Name",Price=100,Stock=10 } gibi kullanabiliriz.
+
+ 5- ViewResult
 
  * ViewData ve ViewBag için aynı string key kullanılamaz. Kullanılırsa referans tipli bir collection olduğu için ViewBag VievData valuesunu eziyor ve değerler aynı oluyor.
 
