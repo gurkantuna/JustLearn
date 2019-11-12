@@ -106,7 +106,7 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
 
 * [ActionName] attribute ile ActionResult döndüren metodun ismi değişik seçilip arayüzden gönderilen ismi farklı ayarlanabilir. Örneğin DeleteConfirmed mdetoduna [ActionName("Delete")] attribute verilirse /Product/Delete/1 şeklinde çalışır. 
 
-* Üye yönetim sistemi ile kullanıcı doğrulaması için projenin RouteConfig ayarları yapılmazsa üyelik sistemi olsa da direk siteye giriş yapılmış gibi olur. Bu yüzden her controllera attribute verilemlidir.
+* Üye yönetim sistemi ile kullanıcı doğrulaması için projenin RouteConfig ayarları yapılmazsa üyelik sistemi olsa da direk siteye giriş yapılmış gibi olur. Bu yüzden her controllera attribute verilemlidir. RouteConfig.RegisterRoutes() içinde routes.MapMvcAttributeRoutes(); da eklenmelidir.
   
   [Authorize] giriş yapılması zorunludur. Parametreli kullnaım modelinde örneğin sadece Admin açmasını istediğimiz bir sayfa için [Authorize(Roles="Admin, Moderator")] ya da [Authorize(Users="John")] şeklinde kullanılabilir.
   [AllowAnonymous] giriş yapılması zorunlu değildir. İstnen herhangi bir metoda verilebilir. Controller için [Authorize] verilse de metoddan verilen [AllowAnonymous] -bunu ezecektir.
@@ -130,5 +130,29 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
 
  * Html.RenderAction() geriye scalar bir değer söndüren metodlarda işe yarayabilir. Örneğin sepetteki ürün sayısı ya da fiyat toplamı gibi. Views/Shared/_Navbar 10.satıra bakılabilir. decimal ya da int değerleri string olarak ya da int döndürmek yerine ActionResult metod tanımlayıp PartialView() döndürlüebilir. Metoddan dönecek değerde ViewBag ile view'a döndürülebilir.
 
- * [OutputCache(Duration = 30)] attribute ActionResult yada başka bir metod için 30 saniye cache atılır.s
+ * [OutputCache(Duration = 30)] attribute ActionResult yada başka bir metod için 30 saniye cache atılır.
 
+ * Bundle içöin Microsoft.AspNet.Web.Optimization NuGet üzerinden yüklenmelidir. Daha sonra Views/web.config içinde 
+
+ * public class BundleConfig {
+
+        public static void RegisterBundles(BundleCollection bundles) {
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                "~/Scripts/jquery.unobtrusive-ajax.min.js",
+                "~/Scripts/DataTables/jquery.dataTables.min.js",
+                "~/Scripts/DataTables/dataTables.bootstrap.min.js"
+                ));
+        }
+    }
+ _Layout.cs @Scripts.Render("~/bundles/scripts")
+ Global.asax Application_Start() BundleConfig.RegisterBundles(BundleTable.Bundles);
+ <pages pageBaseType="System.Web.Mvc.WebViewPage">
+      <namespaces>
+        <add namespace="System.Web.Optimization"/>
+      </namespaces>
+    </pages> eklenip Visual Studio restlenmelidir. Aksi halde @Scripts class hiç gözükmeyecektir.
+Ayrıca Web.config <compilation debug="false" a çekilmeli.
+
+* Hata yakalama Action ya da Controller seviyesinde özelleştirilebileceği gibi proje seviyesinde tümünü yakalayıp loglayabailmek için Global.Asax Application_Start() içinde GlobalFilters.Filters.Add(new HandleErrorAttribute()); ile HandleError attribute tüm orojeye eklenmelidir.
+
+* Area kullanımı örneğin AdminArea içinde tüm authorize işlerini ayırabilmek için kullanılabilir.

@@ -11,6 +11,7 @@ namespace ASPNET.MVC.Controllers {
 
         //Not recommended
         public string HelloWorld() {
+
             return "Hello World1";
         }
 
@@ -19,8 +20,13 @@ namespace ASPNET.MVC.Controllers {
             return "<h1>Hello World2</h1>";
         }
 
-        // GET: Home
+        /* Custpm Error Handling
+           [HandleError(ExceptionType = typeof(SqlException), View = "SqlExceptionView")]
+           [HandleError(ExceptionType = typeof(DivideByZeroException), View = "ZeroExceptionView")]
+        */
         public ActionResult Index() {
+            //int a = 0, b = 1;
+            //var c = b / a;
             return View();
         }
 
@@ -89,5 +95,22 @@ namespace ASPNET.MVC.Controllers {
         public ActionResult Sample3() {
             return Content("ActionName : Sample2 MethodName : Sample3");
         }
+
+        /* Custom Error Handling for each controller
+        protected override void OnException(ExceptionContext filterContext) {
+            base.OnException(filterContext);
+            filterContext.ExceptionHandled = true;
+
+            // Logged error.
+            //_Logger.Error(filterContext.Exception);
+
+            //Redirect 
+            filterContext.Result = RedirectToAction("Index", "Error");
+            // or 
+            filterContext.Result = new ViewResult {
+                ViewName = "~/Views/Error/Index"
+            };
+        }
+        */
     }
 }
