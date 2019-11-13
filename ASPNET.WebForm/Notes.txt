@@ -160,3 +160,14 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
 * Hata yakalama Action ya da Controller seviyesinde özelleştirilebileceği gibi proje seviyesinde tümünü yakalayıp loglayabailmek için Global.Asax Application_Start() içinde GlobalFilters.Filters.Add(new HandleErrorAttribute()); ile HandleError attribute tüm orojeye eklenmelidir.
 
 * Area kullanımı örneğin AdminArea içinde tüm authorize işlerini ayırabilmek için kullanılabilir.
+
+* Uygulamayla ilgili herhangi bir değeri bir key ile Web.config içinden uygulama düzeyinde çekebiliriz.
+ <add key="ImageHeight" value="600"/>
+    <!--for get value command is  ConfigurationManager.AppSettings["ImageHeight"]-->
+    <add key="ImageWidth" value="900"/>
+
+************************************************* İPUÇLARI ***********************************************
+
+* ?? operatörü null kontrolü yapıp eğer nullsa sağındaki satırı çalıştırır. ? ile de navigation property için null kontrolü yapılabilir. Linq sorgusunda çalıştırmak için veri seti AsEnumarable() extension ile collectiona çevrilmelidir.
+
+* migration geri almak için update-database -targetMigration:{MigrationName_Or:CreateProductTable} çalıştırıldığında Down() metodları çalışarak verilen migration ismine kadar db geri alır. Tekrar update-database dendiğinde tarihe göre en son migrationa kadar Up() metodları çalışır.
