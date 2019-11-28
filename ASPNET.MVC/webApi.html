@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.4.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#btnGetData").click(function () {
+                //debugger;
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8091/api/language/1",
+                    success: function (result) {
+                        console.log(result);
+                    }
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <a href="javascript:" id="btnGetData">Get Data</a>
+</body>
+</html>

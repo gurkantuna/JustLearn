@@ -166,8 +166,46 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
     <!--for get value command is  ConfigurationManager.AppSettings["ImageHeight"]-->
     <add key="ImageWidth" value="900"/>
 
+************************************************* Web API 2 ********************************************
+//{DomainAdress}/api/{ControllerName}
+
+* Internet Media Type(JSON, XML, images vs)
+  Standart HTTP methos(GET, POST, PUT, DELETE vs)
+  CRUD OPERATONS CREATE=>PUT, READ=> GET, UPDATE=> PUT, DELETE=> DELETE
+	
+	https://api.github.com/users			: GET	 ile tüm kullancıları getir
+	https://api.github.com/users			: POST	 ile yeni kullanıcı ekle
+	https://api.github.com/users/gurkantuna : GET	 ile tüm gurkantuna kullancısını getir
+	https://api.github.com/users/gurkantuna : POST	 ile tüm gurkantuna kullancısını ekle
+	https://api.github.com/users/gurkantuna : PUT	 ile tüm gurkantuna kullancısını güncelle
+	https://api.github.com/users/gurkantuna : DELETE ile tüm gurkantuna kullancısını sil 
+
+ * blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource hatası için NuGET'dan Microsoft.AspNet.WebApi.Cors kurulup 
+   App_Start/WebApiConfig.cs Register metodunda
+        public static void Register(HttpConfiguration config) {
+            // Web API configuration and services
+            config.EnableCors(); eklenmelidir.
+	Aynı şekilde Controller seviyesinde [EnableCors("{origins}", "{headers}", "{methods}")] şeklinde attribute eklenmelidir. ("*","*","*") tüm originler, tüm headerlar, tüm metodlar demektir haliyle bu şekilde güvenlik sıfırdır.
+
+ * Windows Form API bağlanmak için
+			HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:8091");
+            HttpResponseMessage response = await client.GetAsync("http://localhost:8091/api/language");
+            string result = await response.Content.ReadAsStringAsync();
+			label1.Text = result;
+
 ************************************************* İPUÇLARI ***********************************************
 
 * ?? operatörü null kontrolü yapıp eğer nullsa sağındaki satırı çalıştırır. ? ile de navigation property için null kontrolü yapılabilir. Linq sorgusunda çalıştırmak için veri seti AsEnumarable() extension ile collectiona çevrilmelidir.
 
 * migration geri almak için update-database -targetMigration:{MigrationName_Or:CreateProductTable} çalıştırıldığında Down() metodları çalışarak verilen migration ismine kadar db geri alır. Tekrar update-database dendiğinde tarihe göre en son migrationa kadar Up() metodları çalışır.
+
+* Context.Set<Entity>().State = EntityState.Modified; hata fırlattığında Context.Set<Entity>.AddOrUpdte(entity) kullanabilirsin. Metod System.Data.Entity.Migrations namespace altında.
+  https://stackoverflow.com/questions/23201907/asp-net-mvc-attaching-an-entity-of-type-modelname-failed-because-another-ent
+
+* AJAX client istek yaptığında cevap verirken SignalR client isteğini beklemeden client'a bilgi gönderir. Bildirim tarzı işler bununla yapılmalıdır.
+
+* IIS ilk kurulduğunda 500.19 hatası için C:\Users\{UserName}\Documents\IISExpress\config (applicationhost.config) dosyasının bulunduğu dizin için Gücenlik sekmesinde {ComputerName}\IIS_IUSRS grubuna okuma 
+  izni verilmelidir. https://support.microsoft.com/tr-tr/help/942055/http-error-500-19-error-when-you-open-an-iis-7-0-webpage
+
+* Siteyi IIS den ayağa kaldırdığın zaman integrated security ile login olunamıyor mutlaka bir kullanıcı ile login olmalısın.

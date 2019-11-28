@@ -279,6 +279,7 @@
     <Content Include="Content\site.css" />
     <Content Include="App_Readme\ELMAH-1.2-db-SQLServer.sql" />
     <Content Include="Global.asax" />
+    <Content Include="webApi.html" />
     <Content Include="Models\Readme.txt" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />

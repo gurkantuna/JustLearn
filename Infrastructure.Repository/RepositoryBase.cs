@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Infrastructure.Repository {
@@ -24,15 +25,16 @@ namespace Infrastructure.Repository {
 
         public List<Entity> GetAll() {
             return DbContext.Set<Entity>().ToList();
-        }        
+        }
 
         public bool Insert(Entity entity) {
             DbContext.Set<Entity>().Add(entity);
             return DbContext.SaveChanges() > 0;
         }
 
-        public bool Update(Entity entity) {            
+        public bool Update(Entity entity) {
             //DbContext.Entry(entity).State = EntityState.Modified;
+            DbContext.Set<Entity>().AddOrUpdate(entity);
             return DbContext.SaveChanges() > 0;
         }
 

@@ -8,6 +8,7 @@ namespace Pattern.Domain.Models {
         public NorthwindContext()
             : base("name=NorthwindContext") {
             this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<aspnet_Applications> aspnet_Applications { get; set; }

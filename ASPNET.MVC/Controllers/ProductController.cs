@@ -23,7 +23,6 @@ namespace ASPNET.MVC.Controllers {
 
         //[Authorize(Roles = "Admin,Moderator")]
         public ActionResult New() {
-
             return View("ProductForm", new Product());//We sent an empty Product object for Product.Id hidden field
         }
 

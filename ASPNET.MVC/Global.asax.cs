@@ -20,6 +20,7 @@ namespace ASPNET.MVC {
 
         protected void Application_Error(object sender, EventArgs e) {
             var ex = Server.GetLastError();
+            
             //log the error!
             //_Logger.Error(ex);
         }
