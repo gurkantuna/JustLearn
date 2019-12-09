@@ -134,7 +134,7 @@ namespace ASPNET.WebAPI.Controllers {
 
         [HttpGet]
         public IHttpActionResult /*Get*/SearchByName(string name) {
-            return Ok($"Name: {name}");
+            return Ok($"Name: {name}");//localhost:8091/api/product?name=johnDoe
         }
 
         [HttpGet]

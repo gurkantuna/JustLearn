@@ -6,6 +6,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 
 namespace Infrastructure.Repository {
+        
     public abstract class RepositoryBase<Entity> : IRepositoryBase<Entity> where Entity : class {
 
         private static NorthwindContext _context;
@@ -28,6 +29,8 @@ namespace Infrastructure.Repository {
         }
 
         public bool Insert(Entity entity) {
+            //var addedEntity = DbContext.Entry(entity);
+            //addedEntity.State = EntityState.Added;
             DbContext.Set<Entity>().Add(entity);
             return DbContext.SaveChanges() > 0;
         }

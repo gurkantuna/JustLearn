@@ -64,13 +64,13 @@ DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwi
 
  benzeri bir yapı kurabilirsin. Sayfa içinde farklı içerik göstermek için LoginView componentinin <AnonymousTemplate>, <LoggedInTemplate> ve <RoleGroups><asp:RoleGroup Roles="Admin"><ContentTemplate>Welcome Admin</asp:RoleGroup> templatelerini kullanabilirsin.
 
- /************************ ASPNET MVC **************************/
-
- * Controler kullanıcı isteklerini yakalayan kısımdır. View kullanıcının gördüğü arayüz. Model verileri tanımaldığımız kısım.
+ /******************************************************** ASPNET.MVC ***********************************************************/
+ * Controler kullanıcı isteklerini yakalayan kısımdır. View kullanıcının gördüğü arayüz. Model verileri tanımaldığımız kısım. ASP.NET'de her WebForm PAge classından kalıtım almak zorunda olduğu için her sayfa bir class'a karşılık gelmekteydi ama ASP.NET MVC'de her sayfa Action(.NET Core ile IHttpAcitonResult oldu) tipinde bir metoda karşılık gelir. Böylece her sayfa için bir class tanımlanma zorunluluğundan kurtulunmuştur.
 
  * Controllers ve View zorunludur. Models başka bir projeden de çekilebilir. Models içindeki classlar veri tabanı tablolarını temsil eder. Content klasörü dışardan eklenen dosyalardır. App_Start projenin başlangıcı ile ilgili metodların bulunduğu class lar bulunur. Script dosyaları Scripts klasöünde bulunur.
 
-* Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur.
+* Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur. Action metodunda döndürülen view önce bağlı olduğu controller sınıfı ile aynı isimdeki klasörde arar bulamazsa Shared klasörüne bakar orda da bulamazsa HTTP 404 fırlatır.
+* Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur. Action metodunda döndürülen view önce bağlı olduğu controller sınıfı ile aynı isimdeki klasörde arar bulamazsa Shared klasörüne bakar orda da bulamazsa HTTP 404 fırlatır.
 
 * @RenderBody() Layout sayfasında ana dekiği açar ve bu yüzden sadece bir kez bulunabilir. Farklı bir delik açmak için @RenderSection("head"), @RenderSection("script",required:false) gibi açılır.  Layoutda isimlendirelien delik 
 
@@ -130,13 +130,13 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
   Url.Action("someaction", "somecontroller", new { id = "123" })
   /somecontroller/someaction/123
 
- * Ajax.ActionLink() PostBack yapmadan çalışması için jquery.unobstrisive.ajax NuGet üzerinden yüklenmelidir.
+ * Ajax.ActionLink() PostBack yapmadan ajax helper düzgün çalışması için install-package microsoft.jquery.unobstrisive.ajax NuGet üzerinden yüklenip js dosyası jquery den hemen sonra script tagları ile sayfaya eklenmelidir.
 
  * Html.RenderAction() geriye scalar bir değer söndüren metodlarda işe yarayabilir. Örneğin sepetteki ürün sayısı ya da fiyat toplamı gibi. Views/Shared/_Navbar 10.satıra bakılabilir. decimal ya da int değerleri string olarak ya da int döndürmek yerine ActionResult metod tanımlayıp PartialView() döndürlüebilir. Metoddan dönecek değerde ViewBag ile view'a döndürülebilir.
 
  * [OutputCache(Duration = 30)] attribute ActionResult yada başka bir metod için 30 saniye cache atılır.
 
- * Bundle içöin Microsoft.AspNet.Web.Optimization NuGet üzerinden yüklenmelidir. Daha sonra Views/web.config içinde 
+ * Bundle için Microsoft.AspNet.Web.Optimization NuGet üzerinden yüklenmelidir. Daha sonra Views/web.config içinde 
 
  * public class BundleConfig {
 
@@ -166,6 +166,11 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
     <!--for get value command is  ConfigurationManager.AppSettings["ImageHeight"]-->
     <add key="ImageWidth" value="900"/>
 
+* Kendi helper metodlarımızı @helper keyword ile oluşturabiliriz.
+
+* HTMLHelper oluşturmak için HtmlHelper için extension metod yazılaır. Örneğin string çıktısı için MvcHtmlString döndürülüp içinde TagBuilder ve StringBuilder kullanmak mantıklıdır.
+ /******************************************************** ASPNET.MVC ***********************************************************/
+
 ************************************************* Web API 2 ********************************************
 //{DomainAdress}/api/{ControllerName}
 
@@ -194,6 +199,52 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
             string result = await response.Content.ReadAsStringAsync();
 			label1.Text = result;
 
+ * Metod parametreleriinde [FromBody], [FromUri] gibi direk argument attriube kullanılabilir.
+
+************************************************* Web API 2 ********************************************
+
+************************************* Database *******************************************************
+
+ * Miras odaklı tablo tanımlarken örneğin Customer > ActualCustomer gibi bir tablo yapısında Customer.Id Primsry Key ve Auto Incremental olurken child ActualCustomer tablosunda CustomerId PrimaryKey ve aynı zamanda ForeginKey olmlıdır. Böylece iki tablo arasında birebir ilişki olur.
+
+ * Primary Tablo Foreign Tablo ile ilgili bilgi tutmaz.
+
+ ************************************* Database *******************************************************
+ 
+ ************************************* Katmanlı Mimari *******************************************************
+ * Core			: Tüm projelerde kullanılabilecek dll için geçerli işlemler.
+ * Entites		: Db POCO objeleri ya da complex type lar. Concrete klasöründe POCO objeler ComplexTypes klasöründe iki ya da daha fazla class birleşimi bulunur.
+ * DataAccess	: Sadece db CRUD işlemleri ya da store procedure, view gibi nesnelerle alter, drop, truncate gibi veriye erişim ya da manipülasyonu ile ilgili db işlemlerinin de yapıldığı katmandır. Repository Pattern kullanırken IEntityRepository içine CRUD metodları yazılırken I[Entity]DAL içine store procedure, view gibi özelleştirilmiş sql işlemleri yazılabilir. Bu katmana kesinlikle iş kuralları ile ilgili herhangi bir şey yazılmamalıdır. 
+ * Business		: DB işlemleri dışıdna geriye kalan iş kuralları bu katmana yazılır. Ayrıca DataAccess ile aynı metodları da içerir fakat herhangi bir katmandan DataAccess'e direk ulaşılamaması için devraldığı DataAccess metodlarının gövdelerini DataAccess katmanından alır. 
+ * Service		: Arayüzle iletişime geçebilecek ve işeri teslim eden asıl katman.
+ * UI			: Adı üstünde işte.
+
+ ************************************* Katmanlı Mimari *******************************************************
+
+ ************************************* SOLID Principles *******************************************************
+
+* Singleton Responsibility prensibine göre örneğin kullanıcının siparişleri OrderRepository içinde GetOrdersByUser(User user) metodu ile çekilebilir. Metodun yeri User class mı yoksa Order class mı olmalı sorusunun cevabı metod sonunda elde edilen nesne hangisi ise orada olmalıdır. Bu örnekde sipariş elde edildiği için Order class doğru yeridir. Eğer void döndüren bir metodsa yapılan iş bir başka nesne ile ilgili ve o nesneyi de etkiiyorsa o nesneye ait ayrı bir class içinde yapılmalıdır. Örneğin ProductRepo içinde AddPicture(Product p) yerine PictıureRepository içinde Add(Product p) daha uygun olur. Ayrıca böylelikle hangi metod neyin içindeydi diye düşünmeden ya da debug etmeye bile gherek kalmadan sezgisel bir şekilde nokta atışı işin yapıldığı yere kendimiz yazmış gibi gidebiliriz.
+
+* Open/Closed prensibine göre benzer tiplerdeki nesneler, enum olarak ayrıştırarak kullanmak yerine yerine tek bir interfaceden türetilerek bu interface kullanılacağı metoda parametre geçilerek kullanılmalıdır.
+
+* Liskov's Substitution prensibi bir sınıf türetildiği sınıfları miras alan diğer nesnelerle sorunsuz olarak yer değiştirebilmeli. Implemente edilecek bir base class içinde ortak özellikler dışında bir özellik ya da metod bulunmamalı. Eğer benzer olan classlar için farklı propertyler ya da metodlar varsa yetenekleri için ayrı interfaceler tanımlanarak o interfaceler ayrı ayrı child classa implemente edilmeli. Örneğin otomobil, uçak ve geminin aynı mimaride kullanıldığını düşünelim. Hepsinin ortak özelliği hızlanıp yavaşlayabilmesi yani sürülebilir olmasıdır. Bunu abstract class Vehicle : IDriveable gibi bir interface ile implemente etmek uygun olur. class Otomobil: Vehicle gibi tek bir class miras için yeterli gelebilirken uçak için class AirPlane : Vehicle, IFlyable ve gemi için class Sheep : ISwimmable gibi bir implemantasyon doğru olacaktır. Gelecekte uçan ya da yüzen otomobiller çıktığı zaman class Otomobil : Vehicle, IFlyable, ISwimmable gibi bir implementasyonla otomobilimizi yüzdürebilir ve uçurabiliriz. 
+Yani IDriveble driveable = new Otomobil() olabilirken IDriveable driveable = new AirPlane() de olabildiği için bu prensibe uygundur.
+
+* Dependency Inversiın prensibinin uygulanması Dependency Injection ile yapılabilir. Benzer nesnelerin türetildiği interface, kullanıldığı class içinde private bir field olarak tanımlanarak bu field class constructorında doldurulur.
+  public class SampleManager{
+	private ISample _sample;
+
+	public SampleManager(ISampleManager sample){
+		_sample = sample;	
+	}
+
+	public void Add(){
+		_sample.Add();//interface impelemente eden class içindeki Add metodu çağrılır.
+	}
+  }
+
+************************************* SOLID Principles *******************************************************
+
 ************************************************* İPUÇLARI ***********************************************
 
 * ?? operatörü null kontrolü yapıp eğer nullsa sağındaki satırı çalıştırır. ? ile de navigation property için null kontrolü yapılabilir. Linq sorgusunda çalıştırmak için veri seti AsEnumarable() extension ile collectiona çevrilmelidir.
@@ -209,3 +260,13 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
   izni verilmelidir. https://support.microsoft.com/tr-tr/help/942055/http-error-500-19-error-when-you-open-an-iis-7-0-webpage
 
 * Siteyi IIS den ayağa kaldırdığın zaman integrated security ile login olunamıyor mutlaka bir kullanıcı ile login olmalısın.
+
+* http Accept header başındaki q prefix değertine göre sonuç döndürür : örneğin Accept: application/xml;q=0.2,application/json;q=0.1 yazılırsa xml önceliklidir.
+
+* Visual Studio Output ekranına yazdırmak için Debug.WriteLine() metodu kullanılır.
+
+* Generic inhertance yaparken where sonuna konan new() Generic T tipinin sadece new lenebilir bir class almasını zorunlu kılar. Yani abstract ya da interface generic tip olarak verilemez.
+
+* Bir class Nested olmadıkça hiçbir zaman private olamaz. 
+  Yani sadece class A{ private class B{ }} olabilir. Class default access modifier internal dır. Çünkü aynı proje içinde ise her class birbirine erişebilir olmalıdır bu yüzden internal olmak zorundadır. public belirlendiğinde is ereferans verilen diğer projelerden de ulaşılabilir olur. protected sadece inherit edilen sınıflardan erişilebilir demektir. araya internal eklenirse(protected internal) sadece bulunduğu projede erişilebilir olur.
+************************************************ İPUÇLARI ***********************************************
