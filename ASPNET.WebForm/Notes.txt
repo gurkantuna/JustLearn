@@ -70,7 +70,6 @@ DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwi
  * Controllers ve View zorunludur. Models başka bir projeden de çekilebilir. Models içindeki classlar veri tabanı tablolarını temsil eder. Content klasörü dışardan eklenen dosyalardır. App_Start projenin başlangıcı ile ilgili metodların bulunduğu class lar bulunur. Script dosyaları Scripts klasöünde bulunur.
 
 * Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur. Action metodunda döndürülen view önce bağlı olduğu controller sınıfı ile aynı isimdeki klasörde arar bulamazsa Shared klasörüne bakar orda da bulamazsa HTTP 404 fırlatır.
-* Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur. Action metodunda döndürülen view önce bağlı olduğu controller sınıfı ile aynı isimdeki klasörde arar bulamazsa Shared klasörüne bakar orda da bulamazsa HTTP 404 fırlatır.
 
 * @RenderBody() Layout sayfasında ana dekiği açar ve bu yüzden sadece bir kez bulunabilir. Farklı bir delik açmak için @RenderSection("head"), @RenderSection("script",required:false) gibi açılır.  Layoutda isimlendirelien delik 
 
@@ -106,7 +105,7 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
 
 * Eğer kullanıcı eliyle bir querystring ya da adres doldurup modeli boş göndermeye çalışırsa if(model==null) return HttpNotFound() döndürebilirsin.
 
-* Örneğin Product/Update/1 gibi gönderilen bir id otomatik olarak QueryString ile gönderilmiş olur bunu yakalamak için gönderilen querystring Request.QueryString[] yerine parametrenin ismi ActionResult metoda parametre geçerek yakalanabilir.
+* Örneğin Product/Update/1 gibi gönderilen bir id otomatik olarak QueryString ile gönderilmiş olur bunu yakalamak için gönderilen querystring Request.QueryString[] yerine parametrenin ismi ActionResult metoda parametre geçerek yakalanabilir. HomeController.SampleMethod(int number) benzeri bir Action /Home/Sample?number=1 link ile tetiklenecektir. Gönderilen "number" stringi önce aynı isimli Action parametresinde geçilen argüman olarak, aha sonra kontrol olarak en son varsa Layout içinde ismi arayacaktır.
 
 * [ActionName] attribute ile ActionResult döndüren metodun ismi değişik seçilip arayüzden gönderilen ismi farklı ayarlanabilir. Örneğin DeleteConfirmed mdetoduna [ActionName("Delete")] attribute verilirse /Product/Delete/1 şeklinde çalışır. 
 
@@ -121,7 +120,7 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
    bir kez sorgu atılarak rame alınır. Yani bir kategori çekilmişse alttaki aynı kategoride bir ürün için tekrar db ye gidilmez. Haliyle milyonlarca eklenecek hücredense 10 satır eklemek çok daha mantıklıdır. Ama çekilecek tablo 
    örneğin 10 yerine 1000 kategori varsa bu sefer kullanmamak daha manyıklı bir seçim olabilir. Ancak en mantıklısı Include ile joinlemektense çekilecek modelde asdece ihtiyaç duyulan kolonların dönülmesidir.
 
-* @Html.ActionLink returns a tag like <a href=”/somecontroller/someaction/somedata”>link text</a>
+* @Html.ActionLink returns a tag like <a href="/somecontroller/someaction/somedata">link text</a>
   @Html.Action returns a string like /somecontroller/someaction/somedata
 
   @Html.ActionLink("link text", "someaction", "somecontroller", new { id = "123" }, null)
@@ -132,14 +131,14 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
 
  * Ajax.ActionLink() PostBack yapmadan ajax helper düzgün çalışması için install-package microsoft.jquery.unobstrisive.ajax NuGet üzerinden yüklenip js dosyası jquery den hemen sonra script tagları ile sayfaya eklenmelidir.
 
- * Html.RenderAction() geriye scalar bir değer söndüren metodlarda işe yarayabilir. Örneğin sepetteki ürün sayısı ya da fiyat toplamı gibi. Views/Shared/_Navbar 10.satıra bakılabilir. decimal ya da int değerleri string olarak ya da int döndürmek yerine ActionResult metod tanımlayıp PartialView() döndürlüebilir. Metoddan dönecek değerde ViewBag ile view'a döndürülebilir.
+ * Html.RenderAction() geriye scalar bir değer döndüren metodlarda işe yarayabilir. Örneğin sepetteki ürün sayısı ya da fiyat toplamı gibi. Views/Shared/_Navbar 10.satıra bakılabilir. decimal ya da int değerleri string olarak ya da int döndürmek yerine ActionResult metod tanımlayıp PartialView() döndürlüebilir. Metoddan dönecek değerde ViewBag ile view'a döndürülebilir. Menu vb. link basacak yapıları PartialView olarak döndürmek mantıklıdır.
 
  * [OutputCache(Duration = 30)] attribute ActionResult yada başka bir metod için 30 saniye cache atılır.
 
  * Bundle için Microsoft.AspNet.Web.Optimization NuGet üzerinden yüklenmelidir. Daha sonra Views/web.config içinde 
 
  * public class BundleConfig {
-
+  
         public static void RegisterBundles(BundleCollection bundles) {
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                 "~/Scripts/jquery.unobtrusive-ajax.min.js",
@@ -230,7 +229,43 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
 * Liskov's Substitution prensibi bir sınıf türetildiği sınıfları miras alan diğer nesnelerle sorunsuz olarak yer değiştirebilmeli. Implemente edilecek bir base class içinde ortak özellikler dışında bir özellik ya da metod bulunmamalı. Eğer benzer olan classlar için farklı propertyler ya da metodlar varsa yetenekleri için ayrı interfaceler tanımlanarak o interfaceler ayrı ayrı child classa implemente edilmeli. Örneğin otomobil, uçak ve geminin aynı mimaride kullanıldığını düşünelim. Hepsinin ortak özelliği hızlanıp yavaşlayabilmesi yani sürülebilir olmasıdır. Bunu abstract class Vehicle : IDriveable gibi bir interface ile implemente etmek uygun olur. class Otomobil: Vehicle gibi tek bir class miras için yeterli gelebilirken uçak için class AirPlane : Vehicle, IFlyable ve gemi için class Sheep : ISwimmable gibi bir implemantasyon doğru olacaktır. Gelecekte uçan ya da yüzen otomobiller çıktığı zaman class Otomobil : Vehicle, IFlyable, ISwimmable gibi bir implementasyonla otomobilimizi yüzdürebilir ve uçurabiliriz. 
 Yani IDriveble driveable = new Otomobil() olabilirken IDriveable driveable = new AirPlane() de olabildiği için bu prensibe uygundur.
 
-* Dependency Inversiın prensibinin uygulanması Dependency Injection ile yapılabilir. Benzer nesnelerin türetildiği interface, kullanıldığı class içinde private bir field olarak tanımlanarak bu field class constructorında doldurulur.
+* Interface Segragation prensibi için örneğin bir şirket çalışanlarını düşünelim.
+
+  interface IWorker{ 
+    void Work();
+    void Eat();
+  }
+
+  class Human : IWork {
+     void Work();
+     void Eat();
+  }
+
+  class Robot : IWork{
+    void Work();
+    //void Eat(); // Robota yemek yediriyoruz! İşte bu durum saçma olacağı için bu prensibe ihtiyaç duyuyoruz. 
+  }
+
+  Çözüm için tek bir interace içinde class özelliklerine göre ayrışabilecek bir metod varsa onu ayrı bir interace parçalamak gerekir.
+
+  interface IWork{
+    void Work();
+  }
+
+  interface IEat(){
+    void Eat();
+  }
+
+  interface Human : IWork, IEat {
+    void Work();
+    void Eat();
+  }
+
+  interface Robot : IWork{
+    void Work();
+  }
+
+* Dependency Inversion prensibinin uygulanması Dependency Injection ile yapılabilir. Benzer nesnelerin türetildiği interface, kullanıldığı class içinde private bir field olarak tanımlanarak bu field class constructorında doldurulur.
   public class SampleManager{
 	private ISample _sample;
 
