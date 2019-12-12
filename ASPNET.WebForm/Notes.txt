@@ -137,7 +137,6 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
 
  * Bundle için Microsoft.AspNet.Web.Optimization NuGet üzerinden yüklenmelidir. Daha sonra Views/web.config içinde 
 
- * public class BundleConfig {
   
         public static void RegisterBundles(BundleCollection bundles) {
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
