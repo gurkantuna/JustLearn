@@ -68,12 +68,34 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Html.html" />
+    <Content Include="js.html" />
+    <Content Include="node.JS\exportDemo.js" />
+    <Content Include="node.JS\file.txt" />
+    <Content Include="node.JS\fileStream.js" />
+    <Content Include="node.JS\log.js" />
+    <Content Include="node.JS\node.js" />
+    <Content Include="node.JS\node_modules\node-bin-setup\index.js" />
+    <Content Include="node.JS\node_modules\node\bin\node.exe" />
+    <Content Include="node.JS\node_modules\node\installArchSpecificPackage.js" />
+    <Content Include="node.JS\node_modules\node\node_modules\node-win-x64\bin\node.exe" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="node.JS\node_modules\.bin\node" />
+    <Content Include="node.JS\node_modules\.bin\node.cmd" />
+    <Content Include="node.JS\node_modules\.bin\node.ps1" />
+    <Content Include="node.JS\node_modules\node-bin-setup\package.json" />
+    <Content Include="node.JS\node_modules\node\bin\node" />
+    <Content Include="node.JS\node_modules\node\node_modules\.bin\node" />
+    <Content Include="node.JS\node_modules\node\node_modules\.bin\node.cmd" />
+    <Content Include="node.JS\node_modules\node\node_modules\.bin\node.ps1" />
+    <Content Include="node.JS\node_modules\node\node_modules\node-win-x64\package.json" />
+    <Content Include="node.JS\node_modules\node\package.json" />
+    <Content Include="node.JS\node_modules\node\README.md" />
+    <Content Include="node.JS\package-lock.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

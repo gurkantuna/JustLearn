@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .header {
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 18px;
+            background: red;
+        }
+
+        .container {
+            text-align: center;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+
+    </div>
+    <div class="container">
+        <button onclick="ClickMe()">Click Me!</button><br>
+        <button onclick="this.innerHTML='Clicked Me!'">Click Me!</button><br>
+        <button onclick="ClickMe2(this)">Click Me!</button><br>
+        <button id="button1" onmouseover="MouseOver()" onmouseout="MouseOut()">Come here</button><br>
+        <button onclick="ChangeParag()">Change Paragraph</button>
+        <p id="parag1">Paragraph 1</p>
+
+        <form action="send.aspx" method="POST" name="form1" onsubmit="return CheckValidation()">
+            <input type="text" name="name">
+            <button type="submit">Send Name</button>
+        </form>
+    </div>
+
+    <script>
+        var name = "gürkan";
+        var number1 = 10, number2 = 20, number3 = 30;
+
+
+        console.log("Numbers :" + number1 + number2 + number3);//string concat
+        console.log("Numbers sum : " + (number1 + number2 + number3));//number sum
+
+        console.log("**************************");
+
+        var languages = ["C#", "Java", "Pyhton"];
+        console.log(languages[0])
+        console.log(languages[3])//undefined
+        languages[3] = "Ruby";
+        console.log(languages[3])//Ruby defined
+
+        languages.push("C++");
+        console.log(languages[4]);//C++ defined
+        console.log("Length is " + languages.length);
+        languages.pop();//remove last index
+        console.log(languages[4]);//C++ undefined
+        console.log("Length is " + languages.length);
+
+        console.log("**************************");
+
+        for (let i = 0; i < 10; i++) {
+            console.log(i);
+        }
+
+        var numbers = [20, 3, 60, 85, 46, 28, 91, 39, 79];
+
+        for (let i = 0; i < numbers.length; i++) {
+            console.log("Number is :" + numbers[i]);
+        }
+
+
+        numbers.forEach(function (number) {
+            console.log("Number is: " + number);
+        });
+
+
+        console.log("************ === **************************")
+
+        if (1 == "1") {
+            console.log(" 1=\"1\" "); //This row executes. Data type is unimportant with ==
+        }
+        else {
+            console.log(false);
+        }
+
+        if (1 === "1") {
+            console.log(" 1=\"1\" ");
+        }
+        else {
+            console.log(false);// this row executes. Data type is important with ===
+        }
+
+        console.log("************ FUNCTIONS **************************")
+
+        function Hello(name) {
+            console.log("Hello " + name);
+        }
+        Hello("JohnDoe");
+        /*
+                var name = prompt("What is your name?");//take it from thw window
+                Hello(name);
+        
+                Hello(JohnDoe);//JohnDoe undefined
+                //Hello(1);//This is not executing state. Because code is breaking in the above row
+        */
+        console.log("************ OBJECT **************************")
+
+        var worker = {
+            name: "John",
+            lastName: "Doe",
+            number: 123456,
+            languages: ["C#", "Java", "Pyhton"],
+            adress: {
+                street: "Uskudar",
+                city: "Istanbul",
+                country: "Turkey"
+            },
+            getInfo: function () {
+                return "Person is " + this.name + " " + this.lastName;
+            }
+        };
+
+        console.log(worker.name);
+        console.log(worker.number);
+        console.log(worker.languages);
+        console.log(worker.adress);
+        console.log(worker.adress.country);
+        console.log(worker.getInfo());
+
+        var worker2 = new Object();
+        worker2.name = "gurkan";
+        worker2.lastName = "tuna";
+        worker2.getName = function () {
+            return this.name + " " + this.lastName;
+        }
+
+        console.log(worker2.getName());
+
+        function Employee(name, lastName, number) {
+            this.name = name;
+            this.lastName = lastName;
+            this.number = number;
+            this.ShowName = function () {
+                return "Person is " + this.name + " " + this.lastName;
+            }
+        }
+
+        var employee1 = new Employee("gurkan", "tuna", "123456");
+        var employee2 = new Employee("john", "doe", "654321");
+
+        console.log(employee1.ShowName());
+        console.log(employee2.ShowName());
+
+        function ClickMe() {
+            alert("Clicked Me!");
+        }
+
+        function ClickMe2(element) {
+            element.innerHTML = "Clicked Me with this keyword!";
+        }
+
+        function ChangeParag() {
+            document.getElementById("parag1").style.color = "red";
+        }
+
+        function MouseOver() {
+            document.getElementById("button1").innerHTML = "Get out here!";
+        }
+
+        function MouseOut() {
+            document.getElementById("button1").innerHTML = "Come here";
+        }
+
+        function CheckValidation() {
+            debugger;
+            var form = document.forms["form1"];//name
+            var name = form["name"].value;
+            if (value == "") {
+                alert("Name value cannot be empty!")
+                return false;
+            }
+
+            return true
+        }
+        
+    </script>
+</body>
+</html>
