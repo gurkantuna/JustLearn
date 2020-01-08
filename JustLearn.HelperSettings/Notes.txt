@@ -1,0 +1,507 @@
+﻿İngilizcelerini daha sonra hallederiz ;)
+
+* Tüm uygulamada geçerli olacak bir ayarı web.config <appSettings> tag altına key ekliyerek yapabilirsin. Örneğin <add key="LogoWidth" value="300"/>
+
+* <% Server tagleri directive anlamına gelir. Serverda çalıştırılacak C# kodları bu tagler arasına yazılır. <%@ directive yazmamızı sağlar o sağyfaya özel temel özellikleri veririz. <%: string kütüphanelerini(Response.Write("") ile aynı işi yapar), <% veri tabanı ile ilgili kütüphanelerini yükler. 
+
+* runat="server" attribute ile işaretlenen control artık server tarafından ulaşılabilir olur. Örneğin <div runat="server" /> HtmlGenericControl olarak döndürür.
+
+* MasterPage içinde değişmesini istediğin yere ContentPlaceHolder atıp MasterPageden türettiğin sayfaya Content atarak PlaceHolderId MasterPagedeki ContentPlaceHolderId yi vererek kullanabilirsin.
+* MasterPageden türetilen ayrı  bir MasterPage NestedMasterPage olarak çalışabilirsin. Bulunmasını istemediğin bölümleri çıkarabilirsin.
+
+* Repeater içinde button atmak işe yaramaz. Attığın bir LinkButton benzeri bir control ItemDataBound event içinde, eklediğin control için Repeater.ItemCommand eventi tetiklenir. Arayüzde CommandName attribute verdiğin string işlem ismine göre buton vb. yapacağı işi kontrol ederek Repeater.Control.Find() ile yakalayıp ItemCommand event içinde dönen tipe cast ederek ulaşırsan işe yarar. ItemCommand event içinde gelen EventArg propertylerine göre yapacağın işi belirleyebilirsin. ItemDataBound(s,e) içinde e.Item.DataItem seçilen satırı döndürür. Kendi class ına cast ederek kullanabilirsin. Bu event satır rengi değişimleri gibi işlemler için de kullanılabilir. Repeater sadece göstermek ve dışardan değer gerektirmeyen işlemlerde kullanılabilir. Dışardan ProductName update gibi bir işlem yapılacaksa Datalist veya GridView kullanılmalıdır. ItemCommand, ItemDataBound, e.Item.ItemType...
+
+* e.Item.DataItem Repeater.ItemDataBound dışında her zaman null gelir. Sadece ItemDataBound event içinde DataItem yakalayıp istediğin class cast edebilirsin.s
+
+* Her control HTML karşılığı vardır. HyperLink, LinkButton => <a>,Button => <input type="submit"> , Label => <span>, Panel => <div> gibi. Button gibi bir control atıp event doldurduğunda
+<script src="/WebResource.axd?d=pynGkm2&amp;t=636995447080000000" type="text/javascript"></script> gibi sayfada unique bir script oluşturularak bu script üzerinden eventler çalıştırılır. 
+bunu LinkButton eventi içinde kod çalıştırırken, HyperLink NavigateURL attribute ise sadece bir url'e gönderir. LinkButton benzeri control event ise sayfadaki __doPostBack(eventTarget, eventArgument) fonksiyonunu çalıştırarak işini yapar.
+
+* ~ işareti çalıştırıldığı sayfadan root a çıkmayı sağlar. Aksi taktirde örneğin /Products/ klasör içinde <a href="Default.aspx" > yazılırsa http://www.localhost/Products/Default.aspx e gider fakat ~ konursa direk http://www.localhost/Default.aspx açar. Sadece runat="server" ile işaretlenmiş control de işe yarar.
+
+* UserControl sayfaya register edebilmek için design görünümünde olmak gerekir.
+
+* Repeater ile Datalist farkı, repeater direk verileri basarken DataList tablo olarak basar. Yine Datalist avantajı veriyi düzenleme moduna geçebilmesi. EditItemTemplate barındırır.
+
+* Güncelleme vb işlemler için view haliyle bir id ya da uniqu bir parametre isteyecektir. Bu id formdan post edilmezse id=0 geleceği için bunu bir insert gibi düşünüp update yerine bir insert db ye gönderir. Bu yüzden form içinde bu id kullancııdan habersiz gönderilmelidir. Bunun için HiddenField(@Html.HiddenFor(m=>m.Id)) içinde tutmak mantıklıdır.
+
+* ViewState nesnesi ile QueryString arasındaki fark: QueryString ile farklı sayfalar arasında veri taşıyabiliriz. ViewState ise farklı bir sayfaya geçildiğinde silinir, sadece o sayfa için geçerlidir.
+
+* MemberShip için Tools > Command Line > Developer Command Prompt > aspnet_rgsql ile db tabloları insert ediyoruz. aspnet_regsql -? ile verilecek parametreleri görebiliriz. 
+Web.config >system.web> içine C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\machine.config içinde <membership> tag seçip yapıştırıyoruz. Giriş-çıkış kontrolleri için LoginStatus kullanbilirsin.
+DataCache için yine aynı aspnet_regsql keyword kullanılır. Örneğin Northwind için cache enable çekme komutu aspnet_regsql -S .\sqlexpress -d Northwind -U sa -P 123 -ed yazılırak önce cache enable çekilir. Daha sonra -t Products -et ile tablo için trigger eklenir. 
+
+* MemberShip.GetAllUsers(), MemberShip.CreateUser(string userName,string password...,out MemberShipCreateStatus status),MemberShip.GetUser(), MemberShipUser.ChangePassword(), MemberShipUser.ResetPassword()
+* Üye yönetiminin aktif olabilmesi için Web.Config içinde 
+  
+  Windows seçilirse windows oturumu açmışsa giriş yapabilir, None seilirse hiçbir şekilde giriş yapılmaz, Forms AspNet üye yönetimi ya da kendi üye yapını kullanırsan seçilmeli
+  defaultUrl giriş başarılı ise hangi sayfaya yönlendirildsin.
+  logiUrl giriş yapma sayfası
+  timeout varsayılan 30 dakikadır
+  slidingExpiration eğer timeouta verdiğimiz 60 dakika içinde herhangi bir hareket görürse 60 dakikayı yeniler
+  cookieless giriş yapan kullanıcı cookiede tutulsun
+  createPersistentCookie arayüzde beni hatırla seçilip seçilmemesine göre tru ya da false verilir. true verilirse cookie işlemlerini AspNet kendisi halleder
+
+  <authentication mode="Forms">
+   <forms defaultUrl="Home/Index" loginUrl="Home/Login" timeOut="60" slidingExpiration="true">
+   </forms>
+  </authentication>
+
+  MemberShip.ValidateUser(string userName,string password) eğer true dönerse FormsAuthentication.RedirectFromLoginPage(string userName,bool createPersistentCookie) ile kullanıcıyı doğrulamış oluruz.FormsAuthetantication.SignOut() çıkış yaptırır.
+
+* Roles.GetAllRoles(), Roles.CreateRole(string userName), Roles.AddUserToRole()
+
+* Her klasörün kendi  web.config dosyası olabilir. Klasör içindeki web.cofigde <roleManager> tag ile içinde bulunduğu klasörün izinleri ayarlanabilir. örnegin Admin klasörü içinde <allow role="Admin"/> vermişsek <deny users="*"/> ile diğer kullancılıarın bu klasöre girişini kapatmak gerekir. örnegin Users klasörü için de <deny users="?"/> giriş yapan kullanıcılara izin verir diğer tümünü engeller. Sayfa basında girmesini istediğin kullanıcılar ya da roller için
+
+<location path="PrivatePage.aspx">
+    <system.web>
+      <authorization>
+        <allow roles="Sucker"/>
+        <deny users="*"/>
+      </authorization>
+    </system.web>
+  </location>
+
+ benzeri bir yapı kurabilirsin. Sayfa içinde farklı içerik göstermek için LoginView componentinin <AnonymousTemplate>, <LoggedInTemplate> ve <RoleGroups><asp:RoleGroup Roles="Admin"><ContentTemplate>Welcome Admin</asp:RoleGroup> templatelerini kullanabilirsin.
+
+ /******************************************************** ASPNET.MVC ***********************************************************/
+ * Controler kullanıcı isteklerini yakalayan kısımdır. View kullanıcının gördüğü arayüz. Model verileri tanımaldığımız kısım. ASP.NET'de her WebForm PAge classından kalıtım almak zorunda olduğu için her sayfa bir class'a karşılık gelmekteydi ama ASP.NET MVC'de her sayfa Action(.NET Core ile IHttpAcitonResult oldu) tipinde bir metoda karşılık gelir. Böylece her sayfa için bir class tanımlanma zorunluluğundan kurtulunmuştur.
+
+ * Controllers ve View zorunludur. Models başka bir projeden de çekilebilir. Models içindeki classlar veri tabanı tablolarını temsil eder. Content klasörü dışardan eklenen dosyalardır. App_Start projenin başlangıcı ile ilgili metodların bulunduğu class lar bulunur. Script dosyaları Scripts klasöünde bulunur.
+
+* Controller içindeki geriye ActionResult döndüren her metod için View klasöründe Controller ismi ile başlayan içinde metodun adı ile aynı Index.cshtml, ör:Home/Index.cshtml dosyası bulunur. Action metodunda döndürülen view önce bağlı olduğu controller sınıfı ile aynı isimdeki klasörde arar bulamazsa Shared klasörüne bakar orda da bulamazsa HTTP 404 fırlatır.
+
+* @RenderBody() Layout sayfasında ana dekiği açar ve bu yüzden sadece bir kez bulunabilir. Farklı bir delik açmak için @RenderSection("head"), @RenderSection("script",required:false) gibi açılır.  Layoutda isimlendirelien delik 
+
+@section scripts{
+
+} şeklinde kullanılır.
+
+* @ Razor Engine bir satırdan fazla yazmak için @{ } scope kullanılır. Aslında bunun için View oluşturulduğunda yukarda açılan @{ } bloğu global vb. kullanımmış gibi yararlı olabilir. null kontrolü gibi bir işleme göre karar verip yapacak benzeri ternary operatör gibi işlemler için ise @() şeklinde razor kullanılır.   @* *@ yorum satırıdır. 
+
+* Önce Controller eklenir. Action yazılıp Action içinde sağ tıklayıp Add View denerek View ismi verilir.
+
+* Controllerdan View a birkaç yöntem ile veri gönderilebilir.
+ 
+ 1-Model yöntemi ile göndermek: View(object model); View metodundan çekilen herhangi bir object model olarak döndürülür. View tarafında dönen bu object verinin asıl doğru tipini belirtmek için directive dışında @model [VeriTipi] olarak yakalanır. Ör: @model List<Product>. Ulaşılamayan class için @using keyword ile namespace
+  eklenmelidir. View tarafında kullanmak için nesne Model propertysi ile çekilir. Yalnız bu yöntem sadece tek bir tip geldiğinde kullanılır. Bunu aşmak için Producties, Categoires gibi birden falza tipte propertyler barındıran ayrı bir class yani 5.maddedeki VievModel oluşturulmalıdır.
+ 
+ 2- Model yöntemi ve aşağıdakiler nadiren işe yarar asıl kullanılması gereken kendimize göre oluşturuduğumuz sınıflar olan ViewModel dir.
+
+ 3- ViewBag yöntemi ile göndermek: ViewBag dynamic tiptir. İçine verilen herhangi bir tipi direk View tarafına taşır. ViewBag.AnyThings gibi   verdiğimiz bir Anonymus Type ya da belli bir tipi view tarafında yine aynı isimle yakalarız.
+
+ 4- ViewData["HelloWorld"]=new Product{ Id=1,Name="Name",Price=100,Stock=10 } gibi kullanabiliriz.
+
+ 5- ViewResult
+
+ * ViewData ve ViewBag için aynı string key kullanılamaz. Kullanılırsa referans tipli bir collection olduğu için ViewBag VievData valuesunu eziyor ve değerler aynı oluyor.
+
+* Yazdığımız herhangi bir ActionResult default [HttpGet] ile işaretlenmiş olduğu için direk http get olarak çalışır. Örneğin ürün eklenecek bir sayfa için Product{controller}/Add{view} yazmış olalım. Öncelikle ürününekleneceği componentlerin olduğu sayfayı kullanıcıya göstermek için bir [HttpGet]ActionResult Add() yazılarak kategori,
+tedairkçi gibi listeler de çekilirek bu viewa döndürülür(çünkü ui için bunlara ihtyiaç var). Daha sonra componentlerden toplanan değerler post ile gönderilebilmesi için [HttpPost]ActionResult Add(Product p) metodu yazılır. View dan değerleri yakalayabilmek için de Product class içindeki property isimleri birebir aynıları view tarafındaki
+component name olarak verilir. Yani örneğin ürün ismi alacağımız textbox name="ProductName" olarak girmek zorunludur. Yazdığımız bu post ActionResult ekleme işini yaptıktan sonra return View() ile dönersek arayüzde ihtiyaç duyduğu category, supplier gibi listelere ihtyiaç duyacağı için patlayacaktır. Bu yüzden RedirectToAction("Index") 
+gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a yönlendirmek gerekir. Eğer göndereceğimiz ActionReult başka bir controller içinde ise RedirectToAction() 2.parametresinde bu isim girilir.
+
+* RedirectToAction() metodu gibi örneğin Ekleme ve Güncelleme için aynı view kullanmak için view ları birbiri arasında return edebilirsin. ProductForm gibi bir isimle view oluşturup /Product/Add ve /Product/Update için return View("ProductForm") şeklinde dönebilirsin.
+
+* Eğer kullanıcı eliyle bir querystring ya da adres doldurup modeli boş göndermeye çalışırsa if(model==null) return HttpNotFound() döndürebilirsin.
+
+* Örneğin Product/Update/1 gibi gönderilen bir id otomatik olarak QueryString ile gönderilmiş olur bunu yakalamak için gönderilen querystring Request.QueryString[] yerine parametrenin ismi ActionResult metoda parametre geçerek yakalanabilir. HomeController.SampleMethod(int number) benzeri bir Action /Home/Sample?number=1 link ile tetiklenecektir.
+Gönderilen "number" stringi önce aynı isimli Action parametresinde geçilen argüman olarak, daha sonra kontrol olarak en son varsa Layout içinde ismi arayacaktır.
+
+* [ActionName] attribute ile ActionResult döndüren metodun ismi değişik seçilip arayüzden gönderilen ismi farklı ayarlanabilir. Örneğin DeleteConfirmed mdetoduna [ActionName("Delete")] attribute verilirse /Product/Delete/1 şeklinde çalışır. 
+
+* Üye yönetim sistemi ile kullanıcı doğrulaması için projenin RouteConfig ayarları yapılmazsa üyelik sistemi olsa da direk siteye giriş yapılmış gibi olur. Bu yüzden her controllera attribute verilemlidir. RouteConfig.RegisterRoutes() içinde routes.MapMvcAttributeRoutes(); da eklenmelidir.
+  
+  [Authorize] giriş yapılması zorunludur. Parametreli kullnaım modelinde örneğin sadece Admin açmasını istediğimiz bir sayfa için [Authorize(Roles="Admin, Moderator")] ya da [Authorize(Users="John")] şeklinde kullanılabilir.
+  [AllowAnonymous] giriş yapılması zorunlu değildir. İstnen herhangi bir metoda verilebilir. Controller için [Authorize] verilse de metoddan verilen [AllowAnonymous] -bunu ezecektir.
+  Tüm uygulama için Authorize kullanmak istersek Global.asax Application_Start(){ GlobalFilters.Filters.Add(new AuthorizeAttribute()); } ancak böyle olduğunda Login dahi olunamaz. Bu yüzden Login yapılan metodlar ya da controller için [AllowAnonymous] verilmelidir.
+
+  * LazyLoading kullanma kararı önemli çünkü LazyLoading yaptığın tablo eğer çok kalabalık değilse kullanmak mantıklıdır. Örneğin 10 tane kaftegoriye bağlı 100000 ürünlü bir tabloda Category ile joinleyip çekmek gelecek sorguya 
+   100000*10(Category.Count())*4(Kategori kolonları-CategoryId,CategoryName,Description,Picture) ekstradan 4 milyon scalar hücre ekleyecektir. Oysa LazyLoading kullanıldığında her satır için değil 10 kategorinin her biri için sadece 
+   bir kez sorgu atılarak rame alınır. Yani bir kategori çekilmişse alttaki aynı kategoride bir ürün için tekrar db ye gidilmez. Haliyle milyonlarca eklenecek hücredense 10 satır eklemek çok daha mantıklıdır. Ama çekilecek tablo 
+   örneğin 10 yerine 1000 kategori varsa bu sefer kullanmamak daha manyıklı bir seçim olabilir. Ancak en mantıklısı Include ile joinlemektense çekilecek modelde asdece ihtiyaç duyulan kolonların dönülmesidir.
+
+* @Html.ActionLink returns a tag like <a href="/somecontroller/someaction/somedata">link text</a>
+  @Html.Action returns a string like /somecontroller/someaction/somedata
+
+  @Html.ActionLink("link text", "someaction", "somecontroller", new { id = "123" }, null)
+  <a href="/somecontroller/someaction/123">link text</a>
+
+  Url.Action("someaction", "somecontroller", new { id = "123" })
+  /somecontroller/someaction/123
+
+ * Ajax.ActionLink() PostBack yapmadan ajax helper düzgün çalışması için install-package microsoft.jquery.unobstrisive.ajax NuGet üzerinden yüklenip js dosyası jquery den hemen sonra script tagları ile sayfaya eklenmelidir.
+
+ * Html.RenderAction() geriye scalar bir değer döndüren metodlarda işe yarayabilir. Örneğin sepetteki ürün sayısı ya da fiyat toplamı gibi. Views/Shared/_Navbar 10.satıra bakılabilir. decimal ya da int değerleri string olarak ya da int döndürmek yerine ActionResult metod tanımlayıp PartialView() döndürlüebilir. Metoddan dönecek değerde ViewBag ile view'a döndürülebilir. Menu vb. link basacak yapıları PartialView olarak döndürmek mantıklıdır.
+
+ * [OutputCache(Duration = 30)] attribute ActionResult yada başka bir metod için 30 saniye cache atılır.
+
+ * Bundle için Microsoft.AspNet.Web.Optimization NuGet üzerinden yüklenmelidir. Daha sonra Views/web.config içinde 
+
+  
+        public static void RegisterBundles(BundleCollection bundles) {
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
+                "~/Scripts/jquery.unobtrusive-ajax.min.js",
+                "~/Scripts/DataTables/jquery.dataTables.min.js",
+                "~/Scripts/DataTables/dataTables.bootstrap.min.js"
+                ));
+        }
+    }
+ _Layout.cs @Scripts.Render("~/bundles/scripts")
+ Global.asax Application_Start() BundleConfig.RegisterBundles(BundleTable.Bundles);
+ <pages pageBaseType="System.Web.Mvc.WebViewPage">
+      <namespaces>
+        <add namespace="System.Web.Optimization"/>
+      </namespaces>
+    </pages> eklenip Visual Studio restlenmelidir. Aksi halde @Scripts class hiç gözükmeyecektir.
+Ayrıca Web.config <compilation debug="false" a çekilmeli.
+
+* Hata yakalama Action ya da Controller seviyesinde özelleştirilebileceği gibi proje seviyesinde tümünü yakalayıp loglayabailmek için Global.Asax Application_Start() içinde GlobalFilters.Filters.Add(new HandleErrorAttribute()); ile HandleError attribute tüm orojeye eklenmelidir.
+
+* Area kullanımı örneğin AdminArea içinde tüm authorize işlerini ayırabilmek için kullanılabilir.
+
+* Uygulamayla ilgili herhangi bir değeri bir key ile Web.config içinden uygulama düzeyinde çekebiliriz.
+ <add key="ImageHeight" value="600"/>
+    <!--for get value command is  ConfigurationManager.AppSettings["ImageHeight"]-->
+    <add key="ImageWidth" value="900"/>
+
+* Kendi helper metodlarımızı @helper keyword ile oluşturabiliriz.
+
+* HTMLHelper oluşturmak için HtmlHelper için extension metod yazılaır. Örneğin string çıktısı için MvcHtmlString döndürülüp içinde TagBuilder ve StringBuilder kullanmak mantıklıdır.
+
+* SessionId almak için HttpContext.Current.Session.SessionID property kullanılabilir.
+
+* Controller constructor parametre alamadığı için "No parameterless constructor defined for this object" controller ayağa kalktığında hatası fırlatacaktır.
+  Ninject NuGet'den kurduktan sonra projede 
+
+  namespace Northwind.MvcWebUI.Infrastructure {
+
+    public class NinjectControllerFactory : DefaultControllerFactory {
+        private readonly IKernel _ninjectKernel;
+
+        public NinjectControllerFactory() {
+            _ninjectKernel = new StandardKernel();
+            AddBllBindings();
+        }
+
+        private void AddBllBindings() {
+            _ninjectKernel.Bind<IProductService>().To<ProductManager>().WithConstructorArgument("productDal",new EfProductDal());
+        }
+
+        protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
+        {
+            return controllerType == null ? null : (IController) _ninjectKernel.Get(controllerType);
+        }
+    }
+}
+
+//Global.asax içinde 
+namespace Northwind.MvcWebUI {
+    public class MvcApplication : System.Web.HttpApplication {
+        protected void Application_Start() {
+            AreaRegistration.RegisterAllAreas();
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+        }
+    }
+}
+
+    değişiklikleri yapılmalıdır.
+
+ /******************************************************** ASPNET.MVC ***********************************************************/
+
+************************************************* Web API 2 ********************************************
+//{DomainAdress}/api/{ControllerName}
+
+* Internet Media Type(JSON, XML, images vs)
+  Standart HTTP methos(GET, POST, PUT, DELETE vs)
+  CRUD OPERATONS CREATE=>PUT, READ=> GET, UPDATE=> PUT, DELETE=> DELETE
+	
+	https://api.github.com/users			: GET	 ile tüm kullancıları getir
+	https://api.github.com/users			: POST	 ile yeni kullanıcı ekle
+	https://api.github.com/users/gurkantuna : GET	 ile tüm gurkantuna kullancısını getir
+	https://api.github.com/users/gurkantuna : POST	 ile tüm gurkantuna kullancısını ekle
+	https://api.github.com/users/gurkantuna : PUT	 ile tüm gurkantuna kullancısını güncelle
+	https://api.github.com/users/gurkantuna : DELETE ile tüm gurkantuna kullancısını sil 
+
+ * blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource hatası için NuGET'dan Microsoft.AspNet.WebApi.Cors kurulup 
+   App_Start/WebApiConfig.cs Register metodunda
+        public static void Register(HttpConfiguration config) {
+            // Web API configuration and services
+            config.EnableCors(); eklenmelidir.
+	Aynı şekilde Controller seviyesinde [EnableCors("{origins}", "{headers}", "{methods}")] şeklinde attribute eklenmelidir. ("*","*","*") tüm originler, tüm headerlar,
+    tüm metodlar demektir haliyle bu şekilde güvenlik sıfırdır.
+
+ * Windows Form API bağlanmak için
+			HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:8091");
+            HttpResponseMessage response = await client.GetAsync("http://localhost:8091/api/language");
+            string result = await response.Content.ReadAsStringAsync();
+			label1.Text = result;
+
+ * Metod parametreleriinde [FromBody], [FromUri] gibi direk argument attriube kullanılabilir.
+
+************************************************* Web API 2 ********************************************
+
+************************************* Database *******************************************************
+
+ * Miras odaklı tablo tanımlarken örneğin Customer > ActualCustomer gibi bir tablo yapısında Customer.Id Primsry Key ve Auto Incremental olurken child ActualCustomer
+ tablosunda CustomerId PrimaryKey ve aynı zamanda ForeginKey olmlıdır. Böylece iki tablo arasında birebir ilişki olur.
+
+ * Primary Tablo Foreign Tablo ile ilgili bilgi tutmaz.
+
+ ************************************* Database *******************************************************
+ 
+ ************************************* Katmanlı Mimari *******************************************************
+ * Core			: Tüm projelerde kullanılabilecek dll için geçerli işlemler.
+ * Entites		: Db POCO objeleri ya da complex type lar. Concrete klasöründe POCO objeler ComplexTypes klasöründe iki ya da daha fazla class birleşimi bulunur.
+ 
+ * DataAccess	: Sadece db CRUD işlemleri ya da store procedure, view gibi nesnelerle alter, drop, truncate gibi veriye erişim ya da manipülasyonu ile ilgili db işlemlerinin
+ de yapıldığı katmandır. Cross Cutting Concerns(Logging, Validation, Caching, Authorization) yazılmaz. Sadece veri tabanına erişim ve manipüle ilgili kodlar yazılır.
+ Repository Pattern kullanırken IEntityRepository içine CRUD metodları yazılırken I[Entity]DAL içine store procedure, view gibi özelleştirilmiş sql işlemleri
+ yazılabilir. Bu katmana kesinlikle iş kuralları ile ilgili herhangi bir şey yazılmamalıdır. 
+ 
+ //Data Access
+ internal interface ICustomerDAL {
+     void Save();
+ }    
+
+ class EFCustomerDAL : ICustomerDAL {
+     public void Save() {
+         Console.WriteLine("Customer saved");
+     }
+ }
+
+ * Business		: DB işlemleri dışıdna geriye kalan iş kuralları bu katmana yazılır. Ayrıca DataAccess ile aynı metodları da içerir fakat herhangi bir katmandan DataAccess'e direk
+ ulaşılamaması için devraldığı DataAccess metodlarının gövdelerini DataAccess katmanından alır. 
+ //Business
+ internal interface ICustomerService {
+     void Save(Customer customer);
+ }
+
+ class CustomerManager : ICustomerService {
+
+     private readonly ICustomerDAL _customerDAL;
+
+     public CustomerManager(ICustomerDAL customerDAL) {
+         _customerDAL = customerDAL;
+     }
+
+     public void Save(Customer customer) {
+         _customerDAL.Save();
+     }
+ }
+
+
+ * Service		: Arayüzle iletişime geçebilecek ve işeri teslim eden asıl katman.
+ Bildiğin Web API işte
+
+ * UI			: Adı üstünde işte.
+ //Presentation
+CustomerManager customerManager = new CustomerManager(new EFCustomerDAL());
+
+ ************************************* Katmanlı Mimari *******************************************************
+
+ ************************************* SOLID Principles *******************************************************
+
+https://stackoverflow.com/questions/783974/how-to-implement-solid-principles-into-an-existing-project
+http://www.dimecasts.net/Casts/ByTag/SOLID%20Principle
+
+* Singleton Responsibility prensibine göre bir class değişmek için yalnız ve yalnız bir nedene ihtiyaç duymalı. Örneğin kullanıcının siparişleri OrderRepository içinde
+GetOrdersByUser(User user) metodu ile çekilebilir. Metodun yeri User class mı yoksa Order class mı olmalı sorusunun cevabı metod sonunda elde edilen nesne hangisi ise
+orada olmalıdır. Bu örnekde sipariş elde edildiği için Order class doğru yeridir. Eğer void döndüren bir metodsa yapılan iş bir başka nesne ile ilgili ve o nesneyi de
+etkiiyorsa o nesneye ait ayrı bir class içinde yapılmalıdır. Örneğin ProductRepo içinde AddPicture(Product p) yerine PictureRepository, ProductService ya da ProductManager
+ne zıkkımsa hangisini istersen içinde Add(Product p) daha uygun olur. Ayrıca böylelikle hangi metod neyin içindeydi diye düşünmeden ya da debug etmeye bile gerek kalmadan 
+sezgisel bir şekilde nokta atışı işin yapıldığı yere kendimiz yazmış gibi gidebiliriz. Kısacası fonksiyon sonrası çıkan sonuç ne ise bu işi o class üstlenmelidir.
+
+* Open/Closed prensibine göre benzer tiplerdeki nesneler, enum olarak ayrıştırarak kullanmak yerine yerine tek bir interfaceden türetilerek bu interface kullanılacağı metoda
+parametre geçilerek kullanılmalıdır.
+
+* Liskov's Substitution prensibine göre bir classtan türemiş child class lar gerektiğinde base class yerine kullanılabilmelidir. Base class türündeki nesnenin bir fonksiyonu
+child class üzerinde de aynı fonksiyon çalıştırılabilmelidir.
+Yani bir class türetildiği sınıfları miras alan diğer nesnelerle sorunsuz olarak yer değiştirebilmeli. 
+Implemente edilecek bir base class içinde ortak özellikler dışında child class lara özel bir özellik ya da metod bulunmamalı. Eğer benzer olan classlar 
+için farklı propertyler ya da metodlar varsa yetenekleri için ayrı interfaceler tanımlanarak o interfaceler ayrı ayrı child classa
+implemente edilmeli. Örneğin otomobil, uçak ve geminin aynı mimaride kullanıldığını düşünelim. Hepsinin ortak özelliği hızlanıp yavaşlayabilmesi
+yani sürülebilir olmasıdır. Bunu abstract class Vehicle : IDriveable gibi bir interface ile implemente etmek uygun olur.
+class Otomobil: Vehicle gibi tek bir class miras için yeterli gelebilirken uçak için class AirPlane : Vehicle, IFlyable ve gemi için
+class Sheep : ISwimmable gibi bir implemantasyon doğru olacaktır. Gelecekte uçan ya da yüzen otomobiller çıktığı zaman 
+class Otomobil : Vehicle, IFlyable, ISwimmable gibi bir implementasyonla otomobilimizi yüzdürebilir ve uçurabiliriz. 
+Yani IDriveble driveable = new Otomobil() olabilirken IDriveable driveable = new AirPlane() de olabildiği için bu prensibe uygundur.
+
+* Interface Segragation prensibi için örneğin bir şirket çalışanlarını düşünelim.
+
+  interface IWorker{ 
+    void Work();
+    void Eat();
+  }
+
+  class Human : IWork {
+     void Work();
+     void Eat();
+  }
+
+  class Robot : IWork{
+    void Work();
+    //void Eat(); // Robota yemek yediriyoruz! İşte bu durum saçma olacağı için bu prensibe ihtiyaç duyuyoruz. 
+  }
+
+  Çözüm için tek bir interace içinde class özelliklerine göre ayrışabilecek bir metod varsa onu ayrı bir interace parçalamak gerekir.
+
+  interface IWork{
+    void Work();
+  }
+
+  interface IEat(){
+    void Eat();
+  }
+
+  interface Human : IWork, IEat {
+    void Work();
+    void Eat();
+  }
+
+  interface Robot : IWork{
+    void Work();
+  }
+
+* Dependency Inversion prensibiyüksek seviyeli sınıfların alt seviyeli sıbıflara doğrudan bir bağımlılığının olmaması gerektiğini öngörür. 
+Böyle bir ilişkinin bağımlılığı artırmasından dolayıyapılması gereken araya bir interface ya da abstractclass sokmak olmalıdır.
+Uygulanması Dependency Injection ile yapılabilir. Benzer nesnelerin türetildiği interface, kullanıldığı class içinde private bir field 
+olarak tanımlanarak bu field class constructorında doldurulur.
+  public class SampleManager{
+	private ISample _sample;
+
+	public SampleManager(ISampleManager sample){
+		_sample = sample;	
+	}
+
+	public void Add(){
+		_sample.Add();//interface impelemente eden class içindeki Add metodu çağrılır.
+	}
+  }
+
+************************************* SOLID Principles *******************************************************
+
+************************************************* İPUÇLARI ***********************************************
+
+* ?? operatörü null kontrolü yapıp eğer nullsa sağındaki satırı çalıştırır. ? ile de navigation property için null kontrolü yapılabilir. Linq sorgusunda çalıştırmak için veri seti AsEnumarable() extension ile collectiona çevrilmelidir.
+
+* migration geri almak için update-database -targetMigration:{MigrationName_Or:CreateProductTable} çalıştırıldığında Down() metodları çalışarak verilen migration ismine kadar db geri alır. Tekrar update-database dendiğinde tarihe göre en son migrationa kadar Up() metodları çalışır.
+
+* Context.Set<Entity>().State = EntityState.Modified; hata fırlattığında Context.Set<Entity>.AddOrUpdte(entity) kullanabilirsin. Metod System.Data.Entity.Migrations namespace altında.
+  https://stackoverflow.com/questions/23201907/asp-net-mvc-attaching-an-entity-of-type-modelname-failed-because-another-ent
+
+* AJAX client istek yaptığında cevap verirken SignalR client isteğini beklemeden client'a bilgi gönderir. Bildirim tarzı işler bununla yapılmalıdır.
+
+* IIS ilk kurulduğunda 500.19 hatası için C:\Users\{UserName}\Documents\IISExpress\config (applicationhost.config) dosyasının bulunduğu dizin için Gücenlik sekmesinde {ComputerName}\IIS_IUSRS grubuna okuma 
+  izni verilmelidir. https://support.microsoft.com/tr-tr/help/942055/http-error-500-19-error-when-you-open-an-iis-7-0-webpage
+
+* Siteyi IIS den ayağa kaldırdığın zaman integrated security ile login olunamıyor mutlaka bir kullanıcı ile login olmalısın.
+
+* http Accept header başındaki q prefix değerine göre sonuç döndürür : örneğin Accept: application/xml;q=0.2,application/json;q=0.1 yazılırsa xml önceliklidir.
+
+* Visual Studio Output ekranına yazdırmak için Debug.WriteLine() metodu kullanılır.
+
+* Generic inhertance yaparken where sonuna konan new() Generic T tipinin sadece new lenebilir bir class almasını zorunlu kılar. Yani abstract ya da interface generic tip olarak verilemez.
+
+* Bir class Nested olmadıkça hiçbir zaman private olamaz. 
+  Yani sadece class A{ private class B{ }} olabilir. Class default access modifier internal dır. Çünkü aynı proje içinde ise her class birbirine erişebilir olmalıdır bu yüzden internal olmak zorundadır. public belirlendiğinde ise referans verilen diğer projelerden de ulaşılabilir olur. protected sadece inherit edilen sınıflardan erişilebilir demektir. araya internal eklenirse(protected internal) sadece bulunduğu projede erişilebilir olur.
+
+* if blokları birbirinin alternatifi olan işler için değil sadece logic dallanmalar için kullanılmalı. Alternatif işler için if kullanılmamalı.
+
+* SOLID prensiplerinin genelinden çıkardığım değişebilecek herhangi bir metod, property yani herhangi bir iş için abstraction yap ve bu abstract class ya da interfaceden yeni class üretip ekleyeceğin
+gelişimi burada yaz zaten yapılmışa mümkün olduunca dokunmamak üzerine bir yapı kur.
+
+* Bir class üyesini static yapmaya karar vermek için söz konusu üye class dan üretilen tüm instance lar için mi geçerli yoksa bazıları için mi geçerli sorusu sorulmalıdır.
+ Tüm instance ların yapabildiği bir eylem ise static yapılmalı değilse static yapılmamalıdır.
+
+ http://yazilim.cevapsitesi.com/Makaleler/2/cSharp-lambda-ifadeleri-lambda-expressions
+* C# Lambda İfadeleri (Lambda Expressions)
+Lambda İfadeleri, sadeleştirilmiş anonim (isimsiz) fonksiyonlardır. Bu fonksiyonlar matematikteki ve bilgisayar bilimlerindeki Lambda Calculus'un C# uygulamasıdır.
+
+1-  n => n * n
+
+2-  int kare(int n)
+    {
+        return n * n;
+    }
+
+3-  delegate (int n)
+    {
+        return n * n;
+    }
+
+4-  (int n)
+    {
+        return n * n;
+    }
+
+5-  (int n) => return n * n;
+
+6-  (int n) => n * n
+
+7-  (n) => n * n
+
+8-  n => n * n
+
+Yukarıdaki tüm ifadeler aynı sonucu döndürecektir.
+
+n =>
+{
+    string s = "Hello " + n;
+    Console.WriteLine(s);
+};
+
+Parametre zorunlu değildir.
+() => SampleFunction()
+
+Birden fazla parametre olabilir.
+(a, b) => a > b
+
+* IQueryable instance almak için IQueryable listOppLineData = Enumerable.Empty<T>().AsQueryable()
+benzeri bir kullanım kısmen iş görebilir ama aslen linq to sql sorgusu hazırladığında zaten IQueryable taşıyacaktır.
+
+* JS örnek bir CallBack Event : toastr.options.onClick = function(){ console.log('clicked') };
+
+* Tuple tanımlamak için ör : List<(DateTime Date, string SessionId, SampleClass Sample)>
+
+* public ya da internal static class, public olmayan static contructor barındırabilir. 
+
+    public static class SampleClass{
+        
+        static SampleClass(){
+        
+        }
+    }
+
+* Bir class bağımlı olduğu başka bir class'ı new()'lememeli, bağımlı olunan bu class Constructor'dan interface soyutlama ile inject edilmelidir.
+
+internal interface ICustomerService {
+        void Save(Customer customer);
+}
+class CustomerManager : ICustomerService {
+
+    private readonly ICustomerDAL _customerDAL;
+
+    public CustomerManager(ICustomerDAL customerDAL) {
+        _customerDAL = customerDAL;
+    }
+
+    public void Save(Customer customer) {
+        _customerDAL.Save();
+    }
+}
+
+* WCF service direk projeye .svc uzantılı service eklemektense servisin host edildiği projenin web.config'ine aşağıdaki örnek şekilde eklenebilir.
+    <serviceHostingEnvironment aspNetCompatibilityEnabled="true" multipleSiteBindingsEnabled="true" >
+      <serviceActivations>
+        <add service="Northwind.WcfLibrary.Concrete.ProductService" relativeAddress="Product.svc"/>
+      </serviceActivations>
+    </serviceHostingEnvironment>
+
+    servisi bu şekilde host etmeden önce derlerken hata vermemesine rağmen(web.config içine direk string eklediğimiz için) WcfLibrary projesinin reference dll'i host projesine eklenemlidir.
+
+
+************************************************ İPUÇLARI ***********************************************

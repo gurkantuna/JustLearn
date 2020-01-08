@@ -62,9 +62,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infrastructure.Data\Infrastructure.Data.csproj", "{536BDC08-04FB-4C16-A50B-DF80C03B694B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shared", "_Shared", "{2C28057B-E690-46E8-B41D-FF92169582B8}"
-	ProjectSection(SolutionItems) = preProject
-		ASPNET.WebForm\Notes.txt = ASPNET.WebForm\Notes.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustLearn.CustomControls", "JustLearn.CustomControls\JustLearn.CustomControls.csproj", "{06E5D9E3-1835-4C6D-AF86-FC1D43D52E74}"
 EndProject
