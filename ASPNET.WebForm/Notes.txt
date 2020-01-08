@@ -105,7 +105,8 @@ gibi eklenen ürünü görmnek için listeleme yaptıuğımız ActionResult'a y�
 
 * Eğer kullanıcı eliyle bir querystring ya da adres doldurup modeli boş göndermeye çalışırsa if(model==null) return HttpNotFound() döndürebilirsin.
 
-* Örneğin Product/Update/1 gibi gönderilen bir id otomatik olarak QueryString ile gönderilmiş olur bunu yakalamak için gönderilen querystring Request.QueryString[] yerine parametrenin ismi ActionResult metoda parametre geçerek yakalanabilir. HomeController.SampleMethod(int number) benzeri bir Action /Home/Sample?number=1 link ile tetiklenecektir. Gönderilen "number" stringi önce aynı isimli Action parametresinde geçilen argüman olarak, aha sonra kontrol olarak en son varsa Layout içinde ismi arayacaktır.
+* Örneğin Product/Update/1 gibi gönderilen bir id otomatik olarak QueryString ile gönderilmiş olur bunu yakalamak için gönderilen querystring Request.QueryString[] yerine parametrenin ismi ActionResult metoda parametre geçerek yakalanabilir. HomeController.SampleMethod(int number) benzeri bir Action /Home/Sample?number=1 link ile tetiklenecektir.
+Gönderilen "number" stringi önce aynı isimli Action parametresinde geçilen argüman olarak, daha sonra kontrol olarak en son varsa Layout içinde ismi arayacaktır.
 
 * [ActionName] attribute ile ActionResult döndüren metodun ismi değişik seçilip arayüzden gönderilen ismi farklı ayarlanabilir. Örneğin DeleteConfirmed mdetoduna [ActionName("Delete")] attribute verilirse /Product/Delete/1 şeklinde çalışır. 
 
@@ -167,6 +168,47 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
 * Kendi helper metodlarımızı @helper keyword ile oluşturabiliriz.
 
 * HTMLHelper oluşturmak için HtmlHelper için extension metod yazılaır. Örneğin string çıktısı için MvcHtmlString döndürülüp içinde TagBuilder ve StringBuilder kullanmak mantıklıdır.
+
+* SessionId almak için HttpContext.Current.Session.SessionID property kullanılabilir.
+
+* Controller constructor parametre alamadığı için "No parameterless constructor defined for this object" controller ayağa kalktığında hatası fırlatacaktır.
+  Ninject NuGet'den kurduktan sonra projede 
+
+  namespace Northwind.MvcWebUI.Infrastructure {
+
+    public class NinjectControllerFactory : DefaultControllerFactory {
+        private readonly IKernel _ninjectKernel;
+
+        public NinjectControllerFactory() {
+            _ninjectKernel = new StandardKernel();
+            AddBllBindings();
+        }
+
+        private void AddBllBindings() {
+            _ninjectKernel.Bind<IProductService>().To<ProductManager>().WithConstructorArgument("productDal",new EfProductDal());
+        }
+
+        protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
+        {
+            return controllerType == null ? null : (IController) _ninjectKernel.Get(controllerType);
+        }
+    }
+}
+
+//Global.asax içinde 
+namespace Northwind.MvcWebUI {
+    public class MvcApplication : System.Web.HttpApplication {
+        protected void Application_Start() {
+            AreaRegistration.RegisterAllAreas();
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+        }
+    }
+}
+
+    değişiklikleri yapılmalıdır.
+
  /******************************************************** ASPNET.MVC ***********************************************************/
 
 ************************************************* Web API 2 ********************************************
@@ -188,7 +230,8 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
         public static void Register(HttpConfiguration config) {
             // Web API configuration and services
             config.EnableCors(); eklenmelidir.
-	Aynı şekilde Controller seviyesinde [EnableCors("{origins}", "{headers}", "{methods}")] şeklinde attribute eklenmelidir. ("*","*","*") tüm originler, tüm headerlar, tüm metodlar demektir haliyle bu şekilde güvenlik sıfırdır.
+	Aynı şekilde Controller seviyesinde [EnableCors("{origins}", "{headers}", "{methods}")] şeklinde attribute eklenmelidir. ("*","*","*") tüm originler, tüm headerlar,
+    tüm metodlar demektir haliyle bu şekilde güvenlik sıfırdır.
 
  * Windows Form API bağlanmak için
 			HttpClient client = new HttpClient();
@@ -203,7 +246,8 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
 
 ************************************* Database *******************************************************
 
- * Miras odaklı tablo tanımlarken örneğin Customer > ActualCustomer gibi bir tablo yapısında Customer.Id Primsry Key ve Auto Incremental olurken child ActualCustomer tablosunda CustomerId PrimaryKey ve aynı zamanda ForeginKey olmlıdır. Böylece iki tablo arasında birebir ilişki olur.
+ * Miras odaklı tablo tanımlarken örneğin Customer > ActualCustomer gibi bir tablo yapısında Customer.Id Primsry Key ve Auto Incremental olurken child ActualCustomer
+ tablosunda CustomerId PrimaryKey ve aynı zamanda ForeginKey olmlıdır. Böylece iki tablo arasında birebir ilişki olur.
 
  * Primary Tablo Foreign Tablo ile ilgili bilgi tutmaz.
 
@@ -212,20 +256,78 @@ Ayrıca Web.config <compilation debug="false" a çekilmeli.
  ************************************* Katmanlı Mimari *******************************************************
  * Core			: Tüm projelerde kullanılabilecek dll için geçerli işlemler.
  * Entites		: Db POCO objeleri ya da complex type lar. Concrete klasöründe POCO objeler ComplexTypes klasöründe iki ya da daha fazla class birleşimi bulunur.
- * DataAccess	: Sadece db CRUD işlemleri ya da store procedure, view gibi nesnelerle alter, drop, truncate gibi veriye erişim ya da manipülasyonu ile ilgili db işlemlerinin de yapıldığı katmandır. Repository Pattern kullanırken IEntityRepository içine CRUD metodları yazılırken I[Entity]DAL içine store procedure, view gibi özelleştirilmiş sql işlemleri yazılabilir. Bu katmana kesinlikle iş kuralları ile ilgili herhangi bir şey yazılmamalıdır. 
- * Business		: DB işlemleri dışıdna geriye kalan iş kuralları bu katmana yazılır. Ayrıca DataAccess ile aynı metodları da içerir fakat herhangi bir katmandan DataAccess'e direk ulaşılamaması için devraldığı DataAccess metodlarının gövdelerini DataAccess katmanından alır. 
+ 
+ * DataAccess	: Sadece db CRUD işlemleri ya da store procedure, view gibi nesnelerle alter, drop, truncate gibi veriye erişim ya da manipülasyonu ile ilgili db işlemlerinin
+ de yapıldığı katmandır. Cross Cutting Concerns(Logging, Validation, Caching, Authorization) yazılmaz. Sadece veri tabanına erişim ve manipüle ilgili kodlar yazılır.
+ Repository Pattern kullanırken IEntityRepository içine CRUD metodları yazılırken I[Entity]DAL içine store procedure, view gibi özelleştirilmiş sql işlemleri
+ yazılabilir. Bu katmana kesinlikle iş kuralları ile ilgili herhangi bir şey yazılmamalıdır. 
+ 
+ //Data Access
+ internal interface ICustomerDAL {
+     void Save();
+ }    
+
+ class EFCustomerDAL : ICustomerDAL {
+     public void Save() {
+         Console.WriteLine("Customer saved");
+     }
+ }
+
+ * Business		: DB işlemleri dışıdna geriye kalan iş kuralları bu katmana yazılır. Ayrıca DataAccess ile aynı metodları da içerir fakat herhangi bir katmandan DataAccess'e direk
+ ulaşılamaması için devraldığı DataAccess metodlarının gövdelerini DataAccess katmanından alır. 
+ //Business
+ internal interface ICustomerService {
+     void Save(Customer customer);
+ }
+
+ class CustomerManager : ICustomerService {
+
+     private readonly ICustomerDAL _customerDAL;
+
+     public CustomerManager(ICustomerDAL customerDAL) {
+         _customerDAL = customerDAL;
+     }
+
+     public void Save(Customer customer) {
+         _customerDAL.Save();
+     }
+ }
+
+
  * Service		: Arayüzle iletişime geçebilecek ve işeri teslim eden asıl katman.
+ Bildiğin Web API işte
+
  * UI			: Adı üstünde işte.
+ //Presentation
+CustomerManager customerManager = new CustomerManager(new EFCustomerDAL());
 
  ************************************* Katmanlı Mimari *******************************************************
 
  ************************************* SOLID Principles *******************************************************
 
-* Singleton Responsibility prensibine göre örneğin kullanıcının siparişleri OrderRepository içinde GetOrdersByUser(User user) metodu ile çekilebilir. Metodun yeri User class mı yoksa Order class mı olmalı sorusunun cevabı metod sonunda elde edilen nesne hangisi ise orada olmalıdır. Bu örnekde sipariş elde edildiği için Order class doğru yeridir. Eğer void döndüren bir metodsa yapılan iş bir başka nesne ile ilgili ve o nesneyi de etkiiyorsa o nesneye ait ayrı bir class içinde yapılmalıdır. Örneğin ProductRepo içinde AddPicture(Product p) yerine PictıureRepository içinde Add(Product p) daha uygun olur. Ayrıca böylelikle hangi metod neyin içindeydi diye düşünmeden ya da debug etmeye bile gherek kalmadan sezgisel bir şekilde nokta atışı işin yapıldığı yere kendimiz yazmış gibi gidebiliriz.
+https://stackoverflow.com/questions/783974/how-to-implement-solid-principles-into-an-existing-project
+http://www.dimecasts.net/Casts/ByTag/SOLID%20Principle
 
-* Open/Closed prensibine göre benzer tiplerdeki nesneler, enum olarak ayrıştırarak kullanmak yerine yerine tek bir interfaceden türetilerek bu interface kullanılacağı metoda parametre geçilerek kullanılmalıdır.
+* Singleton Responsibility prensibine göre bir class değişmek için yalnız ve yalnız bir nedene ihtiyaç duymalı. Örneğin kullanıcının siparişleri OrderRepository içinde
+GetOrdersByUser(User user) metodu ile çekilebilir. Metodun yeri User class mı yoksa Order class mı olmalı sorusunun cevabı metod sonunda elde edilen nesne hangisi ise
+orada olmalıdır. Bu örnekde sipariş elde edildiği için Order class doğru yeridir. Eğer void döndüren bir metodsa yapılan iş bir başka nesne ile ilgili ve o nesneyi de
+etkiiyorsa o nesneye ait ayrı bir class içinde yapılmalıdır. Örneğin ProductRepo içinde AddPicture(Product p) yerine PictureRepository, ProductService ya da ProductManager
+ne zıkkımsa hangisini istersen içinde Add(Product p) daha uygun olur. Ayrıca böylelikle hangi metod neyin içindeydi diye düşünmeden ya da debug etmeye bile gerek kalmadan 
+sezgisel bir şekilde nokta atışı işin yapıldığı yere kendimiz yazmış gibi gidebiliriz. Kısacası fonksiyon sonrası çıkan sonuç ne ise bu işi o class üstlenmelidir.
 
-* Liskov's Substitution prensibi bir sınıf türetildiği sınıfları miras alan diğer nesnelerle sorunsuz olarak yer değiştirebilmeli. Implemente edilecek bir base class içinde ortak özellikler dışında bir özellik ya da metod bulunmamalı. Eğer benzer olan classlar için farklı propertyler ya da metodlar varsa yetenekleri için ayrı interfaceler tanımlanarak o interfaceler ayrı ayrı child classa implemente edilmeli. Örneğin otomobil, uçak ve geminin aynı mimaride kullanıldığını düşünelim. Hepsinin ortak özelliği hızlanıp yavaşlayabilmesi yani sürülebilir olmasıdır. Bunu abstract class Vehicle : IDriveable gibi bir interface ile implemente etmek uygun olur. class Otomobil: Vehicle gibi tek bir class miras için yeterli gelebilirken uçak için class AirPlane : Vehicle, IFlyable ve gemi için class Sheep : ISwimmable gibi bir implemantasyon doğru olacaktır. Gelecekte uçan ya da yüzen otomobiller çıktığı zaman class Otomobil : Vehicle, IFlyable, ISwimmable gibi bir implementasyonla otomobilimizi yüzdürebilir ve uçurabiliriz. 
+* Open/Closed prensibine göre benzer tiplerdeki nesneler, enum olarak ayrıştırarak kullanmak yerine yerine tek bir interfaceden türetilerek bu interface kullanılacağı metoda
+parametre geçilerek kullanılmalıdır.
+
+* Liskov's Substitution prensibine göre bir classtan türemiş child class lar gerektiğinde base class yerine kullanılabilmelidir. Base class türündeki nesnenin bir fonksiyonu
+child class üzerinde de aynı fonksiyon çalıştırılabilmelidir.
+Yani bir class türetildiği sınıfları miras alan diğer nesnelerle sorunsuz olarak yer değiştirebilmeli. 
+Implemente edilecek bir base class içinde ortak özellikler dışında child class lara özel bir özellik ya da metod bulunmamalı. Eğer benzer olan classlar 
+için farklı propertyler ya da metodlar varsa yetenekleri için ayrı interfaceler tanımlanarak o interfaceler ayrı ayrı child classa
+implemente edilmeli. Örneğin otomobil, uçak ve geminin aynı mimaride kullanıldığını düşünelim. Hepsinin ortak özelliği hızlanıp yavaşlayabilmesi
+yani sürülebilir olmasıdır. Bunu abstract class Vehicle : IDriveable gibi bir interface ile implemente etmek uygun olur.
+class Otomobil: Vehicle gibi tek bir class miras için yeterli gelebilirken uçak için class AirPlane : Vehicle, IFlyable ve gemi için
+class Sheep : ISwimmable gibi bir implemantasyon doğru olacaktır. Gelecekte uçan ya da yüzen otomobiller çıktığı zaman 
+class Otomobil : Vehicle, IFlyable, ISwimmable gibi bir implementasyonla otomobilimizi yüzdürebilir ve uçurabiliriz. 
 Yani IDriveble driveable = new Otomobil() olabilirken IDriveable driveable = new AirPlane() de olabildiği için bu prensibe uygundur.
 
 * Interface Segragation prensibi için örneğin bir şirket çalışanlarını düşünelim.
@@ -264,7 +366,10 @@ Yani IDriveble driveable = new Otomobil() olabilirken IDriveable driveable = new
     void Work();
   }
 
-* Dependency Inversion prensibinin uygulanması Dependency Injection ile yapılabilir. Benzer nesnelerin türetildiği interface, kullanıldığı class içinde private bir field olarak tanımlanarak bu field class constructorında doldurulur.
+* Dependency Inversion prensibiyüksek seviyeli sınıfların alt seviyeli sıbıflara doğrudan bir bağımlılığının olmaması gerektiğini öngörür. 
+Böyle bir ilişkinin bağımlılığı artırmasından dolayıyapılması gereken araya bir interface ya da abstractclass sokmak olmalıdır.
+Uygulanması Dependency Injection ile yapılabilir. Benzer nesnelerin türetildiği interface, kullanıldığı class içinde private bir field 
+olarak tanımlanarak bu field class constructorında doldurulur.
   public class SampleManager{
 	private ISample _sample;
 
@@ -295,12 +400,108 @@ Yani IDriveble driveable = new Otomobil() olabilirken IDriveable driveable = new
 
 * Siteyi IIS den ayağa kaldırdığın zaman integrated security ile login olunamıyor mutlaka bir kullanıcı ile login olmalısın.
 
-* http Accept header başındaki q prefix değertine göre sonuç döndürür : örneğin Accept: application/xml;q=0.2,application/json;q=0.1 yazılırsa xml önceliklidir.
+* http Accept header başındaki q prefix değerine göre sonuç döndürür : örneğin Accept: application/xml;q=0.2,application/json;q=0.1 yazılırsa xml önceliklidir.
 
 * Visual Studio Output ekranına yazdırmak için Debug.WriteLine() metodu kullanılır.
 
 * Generic inhertance yaparken where sonuna konan new() Generic T tipinin sadece new lenebilir bir class almasını zorunlu kılar. Yani abstract ya da interface generic tip olarak verilemez.
 
 * Bir class Nested olmadıkça hiçbir zaman private olamaz. 
-  Yani sadece class A{ private class B{ }} olabilir. Class default access modifier internal dır. Çünkü aynı proje içinde ise her class birbirine erişebilir olmalıdır bu yüzden internal olmak zorundadır. public belirlendiğinde is ereferans verilen diğer projelerden de ulaşılabilir olur. protected sadece inherit edilen sınıflardan erişilebilir demektir. araya internal eklenirse(protected internal) sadece bulunduğu projede erişilebilir olur.
+  Yani sadece class A{ private class B{ }} olabilir. Class default access modifier internal dır. Çünkü aynı proje içinde ise her class birbirine erişebilir olmalıdır bu yüzden internal olmak zorundadır. public belirlendiğinde ise referans verilen diğer projelerden de ulaşılabilir olur. protected sadece inherit edilen sınıflardan erişilebilir demektir. araya internal eklenirse(protected internal) sadece bulunduğu projede erişilebilir olur.
+
+* if blokları birbirinin alternatifi olan işler için değil sadece logic dallanmalar için kullanılmalı. Alternatif işler için if kullanılmamalı.
+
+* SOLID prensiplerinin genelinden çıkardığım değişebilecek herhangi bir metod, property yani herhangi bir iş için abstraction yap ve bu abstract class ya da interfaceden yeni class üretip ekleyeceğin
+gelişimi burada yaz zaten yapılmışa mümkün olduunca dokunmamak üzerine bir yapı kur.
+
+* Bir class üyesini static yapmaya karar vermek için söz konusu üye class dan üretilen tüm instance lar için mi geçerli yoksa bazıları için mi geçerli sorusu sorulmalıdır.
+ Tüm instance ların yapabildiği bir eylem ise static yapılmalı değilse static yapılmamalıdır.
+
+ http://yazilim.cevapsitesi.com/Makaleler/2/cSharp-lambda-ifadeleri-lambda-expressions
+* C# Lambda İfadeleri (Lambda Expressions)
+Lambda İfadeleri, sadeleştirilmiş anonim (isimsiz) fonksiyonlardır. Bu fonksiyonlar matematikteki ve bilgisayar bilimlerindeki Lambda Calculus'un C# uygulamasıdır.
+
+1-  n => n * n
+
+2-  int kare(int n)
+    {
+        return n * n;
+    }
+
+3-  delegate (int n)
+    {
+        return n * n;
+    }
+
+4-  (int n)
+    {
+        return n * n;
+    }
+
+5-  (int n) => return n * n;
+
+6-  (int n) => n * n
+
+7-  (n) => n * n
+
+8-  n => n * n
+
+Yukarıdaki tüm ifadeler aynı sonucu döndürecektir.
+
+n =>
+{
+    string s = "Hello " + n;
+    Console.WriteLine(s);
+};
+
+Parametre zorunlu değildir.
+() => SampleFunction()
+
+Birden fazla parametre olabilir.
+(a, b) => a > b
+
+* IQueryable instance almak için IQueryable listOppLineData = Enumerable.Empty<T>().AsQueryable()
+benzeri bir kullanım kısmen iş görebilir ama aslen linq to sql sorgusu hazırladığında zaten IQueryable taşıyacaktır.
+
+* JS örnek bir CallBack Event : toastr.options.onClick = function(){ console.log('clicked') };
+
+* Tuple tanımlamak için ör : List<(DateTime Date, string SessionId, SampleClass Sample)>
+
+* public ya da internal static class, public olmayan static contructor barındırabilir. 
+
+    public static class SampleClass{
+        
+        static SampleClass(){
+        
+        }
+    }
+
+* Bir class bağımlı olduğu başka bir class'ı new()'lememeli, bağımlı olunan bu class Constructor'dan interface soyutlama ile inject edilmelidir.
+
+internal interface ICustomerService {
+        void Save(Customer customer);
+}
+class CustomerManager : ICustomerService {
+
+    private readonly ICustomerDAL _customerDAL;
+
+    public CustomerManager(ICustomerDAL customerDAL) {
+        _customerDAL = customerDAL;
+    }
+
+    public void Save(Customer customer) {
+        _customerDAL.Save();
+    }
+}
+
+* WCF service direk projeye .svc uzantılı service eklemektense servisin host edildiği projenin web.config'ine aşağıdaki örnek şekilde eklenebilir.
+    <serviceHostingEnvironment aspNetCompatibilityEnabled="true" multipleSiteBindingsEnabled="true" >
+      <serviceActivations>
+        <add service="Northwind.WcfLibrary.Concrete.ProductService" relativeAddress="Product.svc"/>
+      </serviceActivations>
+    </serviceHostingEnvironment>
+
+    servisi bu şekilde host etmeden önce derlerken hata vermemesine rağmen(web.config içine direk string eklediğimiz için) WcfLibrary projesinin reference dll'i host projesine eklenemlidir.
+
+
 ************************************************ İPUÇLARI ***********************************************
